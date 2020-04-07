@@ -15,6 +15,7 @@
 
     <modules>
         <module>demo-globalexception</module>
+        <module>demo-aoppractice</module>
     </modules>
 
 </project>
