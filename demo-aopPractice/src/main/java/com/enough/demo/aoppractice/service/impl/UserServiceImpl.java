@@ -1,8 +1,8 @@
-package com.enough.demoaoppractice.service.impl;
+package com.enough.demo.aoppractice.service.impl;
 
 import com.enough.common.model.CommonBuilder;
-import com.enough.demoaoppractice.commontypes.UserDTO;
-import com.enough.demoaoppractice.service.UserService;
+import com.enough.demo.aoppractice.commontypes.UserDTO;
+import com.enough.demo.aoppractice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;

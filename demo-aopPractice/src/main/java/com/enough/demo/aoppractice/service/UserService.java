@@ -1,6 +1,6 @@
-package com.enough.demoaoppractice.service;
+package com.enough.demo.aoppractice.service;
 
-import com.enough.demoaoppractice.commontypes.UserDTO;
+import com.enough.demo.aoppractice.commontypes.UserDTO;
 
 import java.util.List;
 

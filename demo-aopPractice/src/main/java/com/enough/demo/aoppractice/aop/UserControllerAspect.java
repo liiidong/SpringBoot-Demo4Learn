@@ -1,12 +1,16 @@
-package com.enough.demoaoppractice.aop;
+package com.enough.demo.aoppractice.aop;
 
 import com.enough.common.model.ReturnResult;
 import com.enough.common.utils.JSONUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
@@ -17,11 +21,11 @@ import java.util.List;
 /**
  * @program: SpringBoot-Demo4Learn
  * @description:
- * @author: liiidong
- * @create: 2020/04/07
+ * @author: lidong
+ * @create: 2020/04/08
  */
-@Aspect
 @Component
+@Aspect
 @Slf4j
 public class UserControllerAspect {
     /**
@@ -37,7 +41,7 @@ public class UserControllerAspect {
      * (..)不限方法参数
      * </p>
      */
-    @Pointcut(value = "execution(public * com.enough.demoaoppractice.controller..*.*(..))")
+    @Pointcut(value = "execution(public * com.enough.demo.aoppractice.controller.*.*(..))")
     public void userControllerMethods() {
     }
 
@@ -47,7 +51,7 @@ public class UserControllerAspect {
         //方法名
         String methodStr = point.getSignature().getDeclaringTypeName().concat(".").concat(point.getSignature().getName());
         String argsStr = getArgsJsonStr(point);
-        log.info(methodStr.concat("入参：").concat(argsStr));
+        log.info(methodStr.concat(",入参：").concat(argsStr));
         long startDate = System.currentTimeMillis();
         Object result = null;
         try {
@@ -59,14 +63,20 @@ public class UserControllerAspect {
         } finally {
             long endDate = System.currentTimeMillis();
             log.info("请求耗时：".concat(String.valueOf(endDate - startDate).concat("ms")));
-            log.info("返回结果：".concat(result == null ? "无" : JSONUtils.toJSONString(result)));
+            log.info(methodStr.concat(",返回结果：").concat(result == null ? "无" : JSONUtils.toJSONString(result)));
         }
         return returnResult;
     }
 
-    @Before(value = "execution(* com.enough.demoaoppractice.controller.UserController.getUsers())")
-    public void afterAround(ProceedingJoinPoint point){
-        System.out.println("***************");
+    /**
+     * 在返回后通知（@AfterReturning）和抛出异常后通知（@AfterThrowing）、Before、After
+     * 的方法中不能使用ProceedingJoinPoint，
+     * 使用JoinPoint
+     * @param point
+     */
+    @Before(value = "execution(* com.enough.demo.aoppractice.controller.UserController.getUsers())")
+    public void afterAround(JoinPoint point){
+        System.out.println("*******获取全部用户信息********");
     }
     /**
      * 获取方法

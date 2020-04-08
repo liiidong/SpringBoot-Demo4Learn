@@ -1,4 +1,4 @@
-package com.enough.demoaoppractice.commontypes;
+package com.enough.demo.aoppractice.commontypes;
 
 import lombok.Getter;
 import lombok.Setter;

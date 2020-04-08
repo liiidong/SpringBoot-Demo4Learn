@@ -1,9 +1,10 @@
-package com.enough.demoaoppractice.controller;
+package com.enough.demo.aoppractice.controller;
 
 import com.enough.common.model.ReturnResult;
-import com.enough.demoaoppractice.commontypes.UserDTO;
-import com.enough.demoaoppractice.service.UserService;
+import com.enough.demo.aoppractice.service.UserService;
+import com.enough.demo.aoppractice.commontypes.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @GetMapping("/query")
     public ReturnResult <List> getUsers() {
