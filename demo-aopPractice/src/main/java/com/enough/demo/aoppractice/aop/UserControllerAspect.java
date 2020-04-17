@@ -1,6 +1,5 @@
 package com.enough.demo.aoppractice.aop;
 
-import com.enough.common.model.ReturnResult;
 import com.enough.common.utils.JSONUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -45,39 +44,39 @@ public class UserControllerAspect {
     public void userControllerMethods() {
     }
 
+    /**
+     * 被拦截的方法，须显式的抛出异常，且不能做任何处理，
+     * 这样AOP才能捕获到方法中的异常，进而进行回滚。
+     *
+     * @param point
+     * @return
+     */
     @Around("userControllerMethods()")
-    public Object doAround(ProceedingJoinPoint point) {
-        ReturnResult <Object> returnResult = null;
+    public Object doAround(ProceedingJoinPoint point) throws Throwable {
         //方法名
         String methodStr = point.getSignature().getDeclaringTypeName().concat(".").concat(point.getSignature().getName());
         String argsStr = getArgsJsonStr(point);
         log.info(methodStr.concat(",入参：").concat(argsStr));
         long startDate = System.currentTimeMillis();
-        Object result = null;
-        try {
-            result = point.proceed();
-            returnResult = ReturnResult.success(Object.class).data(result).build();
-        } catch (Throwable throwable) {
-            log.error("方法请求异常：".concat(throwable.getMessage()));
-            returnResult = ReturnResult.failed(Object.class).msg(throwable.getMessage()).build();
-        } finally {
-            long endDate = System.currentTimeMillis();
-            log.info("请求耗时：".concat(String.valueOf(endDate - startDate).concat("ms")));
-            log.info(methodStr.concat(",返回结果：").concat(result == null ? "无" : JSONUtils.toJSONString(result)));
-        }
-        return returnResult;
+        Object result =  point.proceed();
+        long endDate = System.currentTimeMillis();
+        log.info("请求耗时：".concat(String.valueOf(endDate - startDate).concat("ms")));
+        log.info(methodStr.concat(",返回结果：").concat(result == null ? "无" : JSONUtils.toJSONString(result)));
+        return result;
     }
 
     /**
      * 在返回后通知（@AfterReturning）和抛出异常后通知（@AfterThrowing）、Before、After
      * 的方法中不能使用ProceedingJoinPoint，
      * 使用JoinPoint
+     *
      * @param point
      */
     @Before(value = "execution(* com.enough.demo.aoppractice.controller.UserController.getUsers())")
-    public void afterAround(JoinPoint point){
+    public void afterAround(JoinPoint point) {
         System.out.println("*******获取全部用户信息********");
     }
+
     /**
      * 获取方法
      *
