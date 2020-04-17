@@ -8,3 +8,5 @@ mvnw*/*
 /demo-globalexception/.mvn/wrapper/maven-wrapper.properties
 /demo-globalexception/mvnw
 /demo-globalexception/mvnw.cmd
+/demo-warInTomcat/mvnw
+/demo-warInTomcat/mvnw.cmd
