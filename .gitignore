@@ -10,3 +10,8 @@ mvnw*/*
 /demo-globalexception/mvnw.cmd
 /demo-warInTomcat/mvnw
 /demo-warInTomcat/mvnw.cmd
+/demo-oauth2-sso/oauth2-sso-auth-server/.mvn/wrapper/MavenWrapperDownloader.java
+/demo-oauth2-sso/oauth2-sso-auth-server/.mvn/wrapper/maven-wrapper.jar
+/demo-oauth2-sso/oauth2-sso-auth-server/.mvn/wrapper/maven-wrapper.properties
+/demo-oauth2-sso/oauth2-sso-auth-server/.gitignore
+/demo-oauth2-sso/oauth2-sso-auth-server/.mvn/wrapper
