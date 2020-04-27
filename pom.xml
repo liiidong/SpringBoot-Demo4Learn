@@ -17,6 +17,7 @@
         <module>demo-globalexception</module>
         <module>demo-aoppractice</module>
         <module>demo-oauth2-sso</module>
+        <module>demo-springcloud-config</module>
     </modules>
 
 </project>
