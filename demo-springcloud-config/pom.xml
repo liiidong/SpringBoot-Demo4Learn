@@ -15,6 +15,8 @@
     <properties>
         <java.version>1.8</java.version>
     </properties>
-    <modules></modules>
+    <modules>
+        <module>config-server</module>
+    </modules>
 
 </project>
