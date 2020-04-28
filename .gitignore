@@ -3,6 +3,7 @@
 /target/*
 mvnw*/*
 */.mvn/*
+**/target/**
 /demo-globalexception/.mvn/wrapper/MavenWrapperDownloader.java
 /demo-globalexception/.mvn/wrapper/maven-wrapper.jar
 /demo-globalexception/.mvn/wrapper/maven-wrapper.properties

@@ -1,0 +1,11 @@
+#配置configServer相关信息
+spring:
+  application:
+    name: config-client-demo
+  cloud:
+    config:
+      uri: http://127.0.0.1:8769
+      #快速失败：如果未能获取到相关配置，快速启动失败
+      fail-fast: true
+  profiles:
+    active: dev
