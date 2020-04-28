@@ -23,8 +23,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `config_properties`;
 CREATE TABLE `config_properties`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `key` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'key',
-  `value` varchar(500) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '值',
+  `propertyKey` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'key',
+  `propertyValue` varchar(500) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '值',
   `application` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '应用名',
   `profile` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '激活的文件',
   `label` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT '标签',

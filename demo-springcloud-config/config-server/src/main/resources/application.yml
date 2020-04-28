@@ -15,7 +15,7 @@ spring:
         jdbc: true
 server:
   port: 8769
-spring.cloud.config.server.jdbc.sql: SELECT `key`, `value` from `config_properties` where `application`=? and `profile`=? and `label`=?
+spring.cloud.config.server.jdbc.sql: SELECT propertyKey, propertyValue FROM config_properties WHERE APPLICATION=? and PROFILE=? and LABEL=?
 
 #SpringCloud 1.5版本暴露接口，暴露/bus-refresh接口
 #management.security.enabled=false
@@ -26,6 +26,6 @@ management:  #actuator
     web:
       #base-path: / #默认是/actuator 前缀，可以在这里修改
       exposure:
-        include: "*"  #打开全部请求端点
+        #include: "*"  #打开全部请求端点
+        include: refresh,health,info,bus-refresh
         #include: refresh,health,info #打开部分
-
