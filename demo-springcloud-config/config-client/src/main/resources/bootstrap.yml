@@ -9,3 +9,18 @@ spring:
       fail-fast: true
   profiles:
     active: dev
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include:  bus-refresh
+#  endpoint:
+#    bus-refresh:
+#      enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        #需要开启refresh端口，才能http去手动刷新该client的配置，结合@RefreshScope刷新@Value
+        include: health, info, refresh
