@@ -1,0 +1,27 @@
+#配置configServer相关信息
+spring:
+  application:
+    name: config-client-rabbitmq
+  cloud:
+    config:
+      uri: http://127.0.0.1:8769
+      #快速失败：如果未能获取到相关配置，快速启动失败
+      fail-fast: true
+      profile: dev
+    bus:
+      refresh: # 开启 bus 刷新功能；
+        enabled: true
+  kafka:
+#    consumer:
+#      bootstrap-servers: #指定 kafka 的服务地址
+#        - localhost:9092
+    bootstrap-servers:
+      - localhost:9092
+
+##使用kafka刷新配置的时候，不需要开启监控端口配置，而是通过消息广播通知更新
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        #需要开启refresh端口，才能http去手动刷新该client的配置，结合@RefreshScope刷新@Value
+#        include: '*'

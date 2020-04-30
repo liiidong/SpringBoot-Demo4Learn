@@ -1,0 +1,13 @@
+server:
+  port: 8761
+spring:
+  application:
+    name: service-configmgt
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/enough_test?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
+    username: root
+    password: lidong123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis:
+  #classpath:找class目录下的mapper文件，classpath*：找所有的jar下的mapper文件，遍历，效率低
+  mapper-locations: classpath*:mapper/*.xml

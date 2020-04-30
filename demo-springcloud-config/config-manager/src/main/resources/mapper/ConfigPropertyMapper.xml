@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enough.configmanager.dao.ConfigPropertyMapper">
+    <resultMap id="BaseResultMap" type="com.enough.configmanager.dto.ConfigPropertyDTO">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="property_key" jdbcType="VARCHAR" property="propertyKey"/>
+        <result column="property_value" jdbcType="VARCHAR" property="propertyValue"/>
+        <result column="application" jdbcType="VARCHAR" property="application"/>
+        <result column="profile" jdbcType="VARCHAR" property="profile"/>
+        <result column="label" jdbcType="VARCHAR" property="label"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, property_key, property_value, `application`, profile, `label`, user_id, create_time,
+    create_user, update_time, update_user
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM config_properties
+        WHERE id = #{id}
+    </select>
+    <select id="queryConfigProperties" resultType="com.enough.configmanager.dto.ConfigPropertyDTO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM config_properties
+        <where>
+            <if test="id != null and id != ''">
+                AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="propertyKey != null and propertyKey != ''">
+                AND property_key = #{propertyKey,jdbcType=VARCHAR}
+            </if>
+            <if test="propertyValue != null and propertyValue != ''">
+                AND property_value = #{propertyValue,jdbcType=VARCHAR}
+            </if>
+            <if test="application != null and application != ''">
+                AND `application` = #{application,jdbcType=VARCHAR}
+            </if>
+            <if test="profile != null and profile != ''">
+                AND profile = #{profile,jdbcType=VARCHAR}
+            </if>
+            <if test="label != null and label != ''">
+                AND `label` = #{label,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null and userId != ''">
+                AND user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime !=''">
+                AND create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="createUser != null and createUser != ''">
+                AND create_user = #{createUser,jdbcType=VARCHAR}
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="updateUser != null and updateUser != ''">
+                AND update_user = #{updateUser,jdbcType=VARCHAR}
+            </if>
+        </where>
+        ORDER BY application,update_time DESC
+    </select>
+    <select id="getAllConfigProperties" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM config_properties
+        ORDER BY application,update_time DESC
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from config_properties
+        where id = #{id}
+    </delete>
+    <delete id="deleteConfigProperties">
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.enough.configmanager.dto.ConfigPropertyDTO" useGeneratedKeys="true">
+        insert into config_properties (id, property_key, property_value, `application`,
+                                       profile, `label`, user_id,
+                                       create_time, create_user, update_time,
+                                       update_user)
+        values (#{id}, #{propertyKey,jdbcType=VARCHAR}, #{propertyValue,jdbcType=VARCHAR}, #{application,jdbcType=VARCHAR},
+                #{profile,jdbcType=VARCHAR}, #{label,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+                #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+                #{updateUser,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.enough.configmanager.dto.ConfigPropertyDTO" useGeneratedKeys="true">
+        insert into config_properties
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="propertyKey != null">
+                property_key,
+            </if>
+            <if test="propertyValue != null">
+                property_value,
+            </if>
+            <if test="application != null">
+                `application`,
+            </if>
+            <if test="profile != null">
+                profile,
+            </if>
+            <if test="label != null">
+                `label`,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="propertyKey != null">
+                #{propertyKey,jdbcType=VARCHAR},
+            </if>
+            <if test="propertyValue != null">
+                #{propertyValue,jdbcType=VARCHAR},
+            </if>
+            <if test="application != null">
+                #{application,jdbcType=VARCHAR},
+            </if>
+            <if test="profile != null">
+                #{profile,jdbcType=VARCHAR},
+            </if>
+            <if test="label != null">
+                #{label,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <insert id="addConfigProperties">
+        insert into config_properties (id, property_key, property_value, `application`,
+        profile, `label`, user_id,
+        create_time, create_user, update_time,
+        update_user)
+        values
+        <foreach collection="list" item="i" index="idnex" open="(" close=")" separator=",">
+            (#{i.id}, #{i.propertyKey,jdbcType=VARCHAR}, #{i.propertyValue,jdbcType=VARCHAR}, #{i.application,jdbcType=VARCHAR},
+            #{i.profile,jdbcType=VARCHAR}, #{i.label,jdbcType=VARCHAR}, #{i.userId,jdbcType=VARCHAR},
+            #{i.createTime,jdbcType=TIMESTAMP}, #{i.createUser,jdbcType=VARCHAR}, #{i.updateTime,jdbcType=TIMESTAMP},
+            #{i.updateUser,jdbcType=VARCHAR})
+        </foreach>
+
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.enough.configmanager.dto.ConfigPropertyDTO">
+        update config_properties
+        <set>
+            <if test="propertyKey != null">
+                property_key = #{propertyKey,jdbcType=VARCHAR},
+            </if>
+            <if test="propertyValue != null">
+                property_value = #{propertyValue,jdbcType=VARCHAR},
+            </if>
+            <if test="application != null">
+                `application` = #{application,jdbcType=VARCHAR},
+            </if>
+            <if test="profile != null">
+                profile = #{profile,jdbcType=VARCHAR},
+            </if>
+            <if test="label != null">
+                `label` = #{label,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.enough.configmanager.dto.ConfigPropertyDTO">
+        update config_properties
+        set property_key   = #{propertyKey,jdbcType=VARCHAR},
+            property_value = #{propertyValue,jdbcType=VARCHAR},
+            `application`  = #{application,jdbcType=VARCHAR},
+            profile        = #{profile,jdbcType=VARCHAR},
+            `label`        = #{label,jdbcType=VARCHAR},
+            user_id        = #{userId,jdbcType=VARCHAR},
+            create_time    = #{createTime,jdbcType=TIMESTAMP},
+            create_user    = #{createUser,jdbcType=VARCHAR},
+            update_time    = #{updateTime,jdbcType=TIMESTAMP},
+            update_user    = #{updateUser,jdbcType=VARCHAR}
+        where id = #{id}
+    </update>
+    <update id="updateConfigProperties">
+        update config_properties
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="property_key =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.propertyKey!=null">
+                        when id=#{i.id} then #{i.propertyKey}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix=" property_value =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.propertyValue!=null">
+                        when id=#{i.id} then #{i.propertyValue}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix=" application =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.application!=null">
+                        when id=#{i.id} then #{i.application}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix=" profile =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.profile!=null">
+                        when id=#{i.id} then #{i.profile}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix=" label =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.label!=null">
+                        when id=#{i.id} then #{i.label}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix=" user_id =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.user_id!=null">
+                        when id=#{i.id} then #{i.user_id}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix=" update_time =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateTime!=null">
+                        when id=#{i.id} then #{i.updateTime}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix=" update_user =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.updateUser!=null">
+                        when id=#{i.id} then #{i.updateUser}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach collection="list" index="index" item="i" separator="," open="(" close=")">
+            #{i.id}
+        </foreach>
+    </update>
+</mapper>

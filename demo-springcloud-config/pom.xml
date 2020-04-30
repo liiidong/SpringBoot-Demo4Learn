@@ -16,8 +16,12 @@
     <modules>
         <module>config-server</module>
         <module>config-server-kafka</module>
+        <module>config-server-rabbitmq</module>
         <module>config-client</module>
         <module>config-client-kafka</module>
+        <module>config-client-rabbitmq</module>
+        <module>config-manager</module>
+        <module>service-configmgt</module>
     </modules>
 
 </project>

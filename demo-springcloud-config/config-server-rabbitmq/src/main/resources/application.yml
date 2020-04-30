@@ -1,0 +1,46 @@
+spring:
+  profiles:
+    active: jdbc
+  application:
+    name: config-jdbc-server-rabbitmq
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/enough_test?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
+    username: root
+    password: lidong123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    config:
+      label: master
+      server:
+        jdbc: true
+    bus:
+      enabled: true
+      refresh: # 开启 bus 刷新功能；
+        enabled: true
+  kafka:
+    producer:
+#      bootstrap-servers: #指定 kafka 的服务地址，多个使用英文逗号分隔；
+#        - localhost:9092
+    bootstrap-servers:
+      - localhost:9092
+server:
+  port: 8769
+spring.cloud.config.server.jdbc.sql: SELECT propertyKey, propertyValue FROM config_properties WHERE APPLICATION=? and PROFILE=? and LABEL=?
+#SpringCloud 1.5版本暴露接口，暴露/bus-refresh接口
+#management.security.enabled=false
+#SpringCloud 2.0.0版本以后暴露接口方式
+#management.endpoints.web.exposure.include=bus-refresh
+management:  #actuator
+  endpoints:
+    web:
+      #base-path: / #默认是/actuator 前缀，可以在这里修改
+      exposure:
+        include: "*"  #打开全部请求端点
+        #include: bus-refresh
+        #include: refresh,health,info,bus-refresh
+  endpoint:
+    bus-refresh:
+      enabled: true
+    health:
+      show-details: ALWAYS
+
