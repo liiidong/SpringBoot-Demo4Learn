@@ -18,6 +18,7 @@
         <module>demo-aoppractice</module>
         <module>demo-oauth2-sso</module>
         <module>demo-springcloud-config</module>
+        <module>demo-poi</module>
     </modules>
 	
 
