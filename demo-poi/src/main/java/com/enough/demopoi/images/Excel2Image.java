@@ -1,356 +1,173 @@
 package com.enough.demopoi.images;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
+import com.enough.demopoi.utils.ExcelUtil;
+import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import sun.awt.SunHints;
 
+import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @program: SpringBoot-Demo4Learn
- * @description: excel导出图片
- * @author: liiidong
- * @create: 2020/05/05
+ * @description: excel导出为image
+ * @author: lidong
+ * @create: 2020/05/06
  */
+@Service
 public class Excel2Image {
+    /**
+     * 倍数
+     */
+    private static final float MULTIPLE = 1.15f;
 
-    public static void test() throws Exception {
-        // 给定两个初始值，标志出导出区域，两个行列组合的单元格
-        int[] fromIndex = {0, 0};
-        int[] toIndex = {38, 8};
+    private String sheetName;
+    private int sheetIdx;
+    private SheetTypeEnum sheetType;
+    private String excelFile;
+    @Setter
+    private int imageFileNameColIdx;
+    @Setter
+    private String imageFormat;
 
-        int imageWidth = 0;
-        int imageHeight = 0;
-
-        Workbook wb = WorkbookFactory.create(new File("C:\\Users\\LD\\Desktop\\4月考勤汇总表.xlsx"));
-        Sheet sheet = wb.getSheetAt(0);
-        List <CellRangeAddress> rangeAddress = sheet.getMergedRegions(); // 获取整个sheet中合并单元格组合的集合
-
-        // 首先做初步的边界检测，如果指定区域是不合法的则抛出异常
-        int rowSum = sheet.getPhysicalNumberOfRows();
-        int colSum = sheet.getRow(0).getPhysicalNumberOfCells();
-        if (fromIndex[0] > rowSum || fromIndex[0] > toIndex[0] || toIndex[0] > rowSum) {
-            throw new Exception("the rowIndex of the area is wrong!");
-        }
-        if (fromIndex[1] > colSum || fromIndex[1] > toIndex[1] || toIndex[1] > colSum) {
-            throw new Exception("the colIndex of the area is wrong!");
-        }
-
-        // 计算实际需要载入内存的二维Cell数组的大小，剔除隐藏行列
-        int rowSize = toIndex[0] + 1;
-        int colSize = toIndex[1] + 1;
-
-        // 遍历需要扫描的区域
-
-        UserCell[][] cells = new UserCell[rowSize][colSize];
-        int[] rowPixPos = new int[rowSize + 1];
-        rowPixPos[0] = 0;
-        int[] colPixPos = new int[colSize + 1];
-        colPixPos[0] = 0;
-        for (int i = 0; i < rowSize; i++) {
-
-            for (int j = 0; j < colSize; j++) {
-
-                cells[i][j] = new UserCell();
-                cells[i][j].setCell(sheet.getRow(i).getCell(j));
-                cells[i][j].setRow(i);
-                cells[i][j].setCol(j);
-                boolean ifShow = (i >= fromIndex[0]) && (j >= fromIndex[1]);    //首先行列要在指定区域之间
-                ifShow = ifShow && !(sheet.isColumnHidden(j) || sheet.getRow(i).getZeroHeight()); //其次行列不可以隐藏
-                cells[i][j].setShow(ifShow);
-
-                // 计算所求区域宽度
-                float widthPix = !ifShow ? 0 : sheet.getColumnWidthInPixels(j); // 如果该单元格是隐藏的，则置宽度为0
-                if (i == fromIndex[0]) {
-                    imageWidth += widthPix;
-                }
-
-                colPixPos[j + 1] = (int) (widthPix * 1.15 + colPixPos[j]);
-
-            }
-
-            // 计算所求区域高度
-            boolean ifShow = (i >= fromIndex[0]);    //行序列在指定区域中间
-            ifShow = ifShow && !sheet.getRow(i).getZeroHeight();  //行序列不能隐藏
-            float heightPoint = !ifShow ? 0 : sheet.getRow(i).getHeightInPoints(); // 如果该单元格是隐藏的，则置高度为0
-            imageHeight += heightPoint;
-            rowPixPos[i + 1] = (int) (heightPoint * 96 / 72) + rowPixPos[i];
-
-        }
-
-        imageHeight = imageHeight * 96 / 72;
-        imageWidth = imageWidth * 115 / 100;
-
-        wb.close();
-
-        List <Grid> grids = new ArrayList <Grid>();
-        for (int i = 0; i < rowSize; i++) {
-            for (int j = 0; j < colSize; j++) {
-                Grid grid = new Grid();
-                // 设置坐标和宽高
-                grid.setX(colPixPos[j]);
-                grid.setY(rowPixPos[i]);
-                grid.setWidth(colPixPos[j + 1] - colPixPos[j]);
-                grid.setHeight(rowPixPos[i + 1] - rowPixPos[i]);
-                grid.setRow(cells[i][j].getRow());
-                grid.setCol(cells[i][j].getCol());
-                grid.setShow(cells[i][j].getShow());
-
-                // 判断是否为合并单元格
-                int[] isInMergedStatus = isInMerged(grid.getRow(), grid.getCol(), rangeAddress);
-
-                if (isInMergedStatus[0] == 0 && isInMergedStatus[1] == 0) {
-                    // 此单元格是合并单元格，并且不是第一个单元格，需要跳过本次循环，不进行绘制
-                    continue;
-                } else if (isInMergedStatus[0] != -1 && isInMergedStatus[1] != -1) {
-                    // 此单元格是合并单元格，并且属于第一个单元格，则需要调整网格大小
-                    int lastRowPos = isInMergedStatus[0] > rowSize - 1 ? rowSize - 1 : isInMergedStatus[0];
-                    int lastColPos = isInMergedStatus[1] > colSize - 1 ? colSize - 1 : isInMergedStatus[1];
-
-                    grid.setWidth(colPixPos[lastColPos + 1] - colPixPos[j]);
-                    grid.setHeight(rowPixPos[lastRowPos + 1] - rowPixPos[i]);
-
-                }
-
-                // 单元格背景颜色
-                CellStyle cs = cells[i][j].getCell().getCellStyle();
-                if (cs.getFillPattern() == cs.getFillBackgroundColor()) {
-                    grid.setBgColor((Color) cells[i][j].getCell().getCellStyle().getFillForegroundColorColor());
-                }
-
-                // 设置字体
-                org.apache.poi.ss.usermodel.Font font = wb.getFontAt(cs.getFontIndex());
-                grid.setFont((XSSFFont) font);
-
-                // 设置字体前景色
-                if (font instanceof XSSFFont) {
-                    XSSFFont xf = (XSSFFont) font;
-                    grid.setFtColor(new Color(xf.getColor()));
-                }
-
-                // 设置文本
-                String strCell = "";
-                switch (cells[i][j].getCell().getCellType()) {
-                case HSSFCell.CELL_TYPE_NUMERIC:
-                    strCell = String.valueOf(cells[i][j].getCell().getNumericCellValue());
-                    break;
-                case HSSFCell.CELL_TYPE_STRING:
-                    strCell = cells[i][j].getCell().getStringCellValue();
-                    break;
-                case HSSFCell.CELL_TYPE_BOOLEAN:
-                    strCell = String.valueOf(cells[i][j].getCell().getBooleanCellValue());
-                    break;
-                case HSSFCell.CELL_TYPE_FORMULA:
-
-                    try {
-                        strCell = String.valueOf(cells[i][j].getCell().getNumericCellValue());
-                    } catch (IllegalStateException e) {
-                        strCell = String.valueOf(cells[i][j].getCell().getRichStringCellValue());
-                    }
-                    break;
-                default:
-                    strCell = "";
-                }
-
-                if (cells[i][j].getCell().getCellStyle().getDataFormatString().contains("0.00%")) {
-                    try {
-                        double dbCell = Double.valueOf(strCell);
-                        strCell = new DecimalFormat("#.00").format(dbCell * 100) + "%";
-                    } catch (NumberFormatException e) {
-                    }
-                }
-
-                grid.setText(strCell.matches("\\w*\\.0") ? strCell.substring(0, strCell.length() - 2) : strCell);
-
-                grids.add(grid);
-            }
-        }
-
-        BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2d = image.createGraphics();
-        // 平滑字体
-        g2d.setRenderingHint(SunHints.KEY_ANTIALIASING, SunHints.VALUE_ANTIALIAS_OFF);
-        g2d.setRenderingHint(SunHints.KEY_TEXT_ANTIALIASING, SunHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
-        g2d.setRenderingHint(SunHints.KEY_STROKE_CONTROL, SunHints.VALUE_STROKE_DEFAULT);
-        g2d.setRenderingHint(SunHints.KEY_TEXT_ANTIALIAS_LCD_CONTRAST, 140);
-        g2d.setRenderingHint(SunHints.KEY_FRACTIONALMETRICS, SunHints.VALUE_FRACTIONALMETRICS_OFF);
-        g2d.setRenderingHint(SunHints.KEY_RENDERING, SunHints.VALUE_RENDER_DEFAULT);
-
-        g2d.setColor(Color.white);
-        g2d.fillRect(0, 0, imageWidth, imageHeight);
-        parseGrids(grids, g2d);
-
-        g2d.dispose();
-        ImageIO.write(image, "png", new File("C:\\Users\\LD\\Desktop\\test.png"));
-
-        System.out.println("Output to PNG file Success!");
+    public Excel2Image() {
     }
 
-    private static void parseGrids(List <Grid> grids, Graphics2D g2d) {
-        // 绘制表格
-        for (Grid g : grids) {
-            if (!g.isShow()) {
-                continue;
-            }
-
-            // 绘制背景色
-            g2d.setColor(g.getBgColor() == null ? Color.white : g.getBgColor());
-            g2d.fillRect(g.getX(), g.getY(), g.getWidth(), g.getHeight());
-
-            // 绘制边框
-            g2d.setColor(Color.black);
-            g2d.setStroke(new BasicStroke(1));
-            g2d.drawRect(g.getX(), g.getY(), g.getWidth(), g.getHeight());
-
-            // 绘制文字,居中显示
-            g2d.setColor(g.getFtColor());
-            Font font = new Font(g.getFont().getFontName(), g.getFont().getColor(), g.getFont().getFontHeightInPoints());
-            FontMetrics fm = g2d.getFontMetrics(font);
-            int strWidth = fm.stringWidth(g.getText());// 获取将要绘制的文字宽度
-            g2d.setFont(font);
-            g2d.drawString(g.getText(), g.getX() + (g.getWidth() - strWidth) / 2, g.getY() + (g.getHeight() - font.getSize()) / 2 + font.getSize());
-        }
+    public Excel2Image(String excelFile, SheetTypeEnum sheetType, String sheetName, int sheetIdx) {
+        this.excelFile = excelFile;
+        this.sheetType = sheetType;
+        this.sheetName = sheetName;
+        this.sheetIdx = sheetIdx;
     }
 
-    public static void main(String[] args) throws Exception {
-        Workbook wb = WorkbookFactory.create(new File("C:\\Users\\LD\\Desktop\\4月考勤汇总表.xlsx"));
-        Sheet sheet = wb.getSheetAt(0);
+    @PostConstruct
+    private void init() {
+    }
+
+    public boolean excelRow2Images(String exportDir) throws Exception {
+        Assert.hasLength(excelFile, "Excel文件不能为空");
+        Sheet sheet;
+        if (sheetType == SheetTypeEnum.IDX) {
+            Assert.isTrue(sheetIdx > -1, "sheet索引不能为空");
+            sheet = WorkbookFactory.create(new File(excelFile)).getSheetAt(sheetIdx);
+        } else {
+            Assert.hasLength(sheetName, "sheet名不能为空");
+            sheet = WorkbookFactory.create(new File(excelFile)).getSheet(sheetName);
+        }
+        Assert.notNull(sheet, "sheet解析失败");
         // 遍历需要扫描的区域
-        int rowSize = sheet.getLastRowNum();
-        int colSize = sheet.getRow(0).getPhysicalNumberOfCells();
-        int imageWidth = getRowWidth(colSize,sheet);
-        int imageHeight = 0;
-        UserCell[][] cells = null;
-        List <Grid> grids = null;
+        int rowSize = ExcelUtil.getActiveRowCount(sheet);
+        int imageWidth = float2Int((ExcelUtil.getRowWidth(sheet) * 1.5f));
+        int imageHeight = float2Int(ExcelUtil.getRowHeight(0, 2, sheet) * 2.0f);
+        List <GridInfo> grids = null;
         String fileName = "";
+        float x = ExcelUtil.getSingleColWidth(sheet, 0) * MULTIPLE;
+        float y = sheet.getRow(0).getHeightInPoints() * MULTIPLE;
         for (int i = 1; i < rowSize; i++) {
-            int[] rowPixPos = new int[2];
-            rowPixPos[0] = 0;
-            int[] colPixPos = new int[colSize + 1];
-            colPixPos[0] = 0;
-            cells = new UserCell[2][colSize];
-            parseUserCells(sheet, colSize, cells, rowPixPos, colPixPos, 0);
-            parseUserCells(sheet, colSize, cells, rowPixPos, colPixPos, 1);
             grids = new ArrayList <>();
-            toCol(wb, colSize, cells[0], rowPixPos, colPixPos, grids, 0);
-            toCol(wb, colSize, cells[1], rowPixPos, colPixPos, grids, 1);
-            fileName = sheet.getRow(i).getCell(2).getStringCellValue();
-            imageHeight = sheet.getRow(i).getHeight() + sheet.getRow(0).getHeight();
-            exportImage(imageWidth,imageHeight,grids,fileName);
+            parseGridInfos(grids, sheet, 0, x, y);
+            parseGridInfos(grids, sheet, i, x, y + sheet.getRow(i).getHeightInPoints() * MULTIPLE);
+            fileName = getFileNameFromExcel(sheet, i);
+            exportImage(imageWidth, imageHeight, grids, exportDir, fileName, imageFormat);
+        }
+        return true;
+    }
+
+    public void excelRow2Images(Sheet sheet, String exportDir) throws IOException {
+        // 遍历需要扫描的区域
+        int rowSize = ExcelUtil.getActiveRowCount(sheet);
+        int imageWidth = float2Int((ExcelUtil.getRowWidth(sheet) * 1.5f));
+        int imageHeight = float2Int(ExcelUtil.getRowHeight(0, 2, sheet) * 2.0f);
+        List <GridInfo> grids = null;
+        String fileName = "";
+        float x = ExcelUtil.getSingleColWidth(sheet, 0) * MULTIPLE;
+        float y = sheet.getRow(0).getHeightInPoints() * MULTIPLE;
+        for (int i = 1; i < rowSize; i++) {
+            grids = new ArrayList <>();
+            parseGridInfos(grids, sheet, 0, x, y);
+            parseGridInfos(grids, sheet, i, x, y + sheet.getRow(i).getHeightInPoints() * MULTIPLE);
+            fileName = getFileNameFromExcel(sheet, i);
+            exportImage(imageWidth, imageHeight, grids, exportDir, fileName, imageFormat);
         }
     }
 
-    private static void parseUserCells(Sheet sheet, int colSize, UserCell[][] cells, int[] rowPixPos, int[] colPixPos, int i) {
+    /**
+     * 解析网格信息
+     *
+     * @param gridInfos
+     * @param sheet
+     * @param rowIdx
+     */
+    private void parseGridInfos(List <GridInfo> gridInfos, Sheet sheet, int rowIdx, float x, float y) {
+        int colSize = ExcelUtil.getActiveColCount(sheet);
         for (int j = 0; j < colSize; j++) {
-            cells[i][j] = new UserCell();
-            cells[i][j].setCell(sheet.getRow(i).getCell(j));
-            cells[i][j].setRow(i);
-            cells[i][j].setCol(j);
-            boolean ifShow = true;
-            ifShow = ifShow && !(sheet.isColumnHidden(j) || sheet.getRow(i).getZeroHeight()); //其次行列不可以隐藏
-            cells[i][j].setShow(ifShow);
-
-            // 计算所求区域宽度
-            float widthPix = !ifShow ? 0 : sheet.getColumnWidthInPixels(j); // 如果该单元格是隐藏的，则置宽度为0
-
-            colPixPos[j + 1] = (int) (widthPix * 1.15 + colPixPos[j]);
-
-        }
-
-        // 计算所求区域高度
-        boolean ifShow = true;    //行序列在指定区域中间
-        ifShow = ifShow && !sheet.getRow(i).getZeroHeight();  //行序列不能隐藏
-        float heightPoint = !ifShow ? 0 : sheet.getRow(i).getHeightInPoints(); // 如果该单元格是隐藏的，则置高度为0
-        rowPixPos[i + 1] = (int) (heightPoint * 96 / 72) + rowPixPos[i];
-    }
-
-    private static int getRowWidth(int cols,Sheet sheet){
-        // 计算所求区域宽度
-        int widthPix = 0;
-        for (int i = 0; i < cols; i++) {
-            widthPix += sheet.getColumnWidthInPixels(i);
-        }
-        return widthPix;
-    }
-
-    private static void toCol(Workbook wb, int colSize, UserCell[] cell, int[] rowPixPos, int[] colPixPos, List <Grid> grids, int i) {
-        for (int j = 0; j < colSize; j++) {
-            Grid grid = new Grid();
+            Cell cell = sheet.getRow(rowIdx).getCell(j);
+            GridInfo grid = new GridInfo();
             // 设置坐标和宽高
-            grid.setX(colPixPos[j]);
-            grid.setY(rowPixPos[i]);
-            grid.setWidth(colPixPos[j + 1] - colPixPos[j]);
-            grid.setHeight(rowPixPos[i + 1] - rowPixPos[i]);
-            grid.setRow(cell[j].getRow());
-            grid.setCol(cell[j].getCol());
-            grid.setShow(cell[j].getShow());
-
+            grid.setX(x);
+            x += ExcelUtil.getSingleColWidth(sheet, j) * MULTIPLE;
+            grid.setY(y);
+            grid.setWidth(ExcelUtil.getSingleColWidth(sheet, j) * MULTIPLE);
+            grid.setHeight(ExcelUtil.getRowHeight(rowIdx, rowIdx, sheet) * MULTIPLE);
+            grid.setRowIdx(rowIdx);
+            grid.setColIdx(j);
+            grid.setShow(ExcelUtil.checkColHidden(rowIdx, j, sheet));
             // 单元格背景颜色
-            CellStyle cs = cell[j].getCell().getCellStyle();
+            CellStyle cs = cell.getCellStyle();
             if (cs.getFillPattern() == cs.getFillBackgroundColor()) {
-                grid.setBgColor((Color) cell[j].getCell().getCellStyle().getFillForegroundColorColor());
+                grid.setBgColor((Color) cell.getCellStyle().getFillForegroundColorColor());
             }
-
             // 设置字体
-            org.apache.poi.ss.usermodel.Font font = wb.getFontAt(cs.getFontIndex());
-            grid.setFont((XSSFFont) font);
-
+            org.apache.poi.ss.usermodel.Font font = sheet.getWorkbook().getFontAt(cs.getFontIndex());
+            grid.setFont(new Font(font.getFontName(), cell.getCellStyle().getBorderBottomEnum().getCode(), (int) (font.getFontHeightInPoints() * MULTIPLE)));
             // 设置字体前景色
             if (font instanceof XSSFFont) {
                 XSSFFont xf = (XSSFFont) font;
                 grid.setFtColor(new Color(xf.getColor()));
             }
-
             // 设置文本
-            String strCell = "";
-            switch (cell[j].getCell().getCellType()) {
-            case HSSFCell.CELL_TYPE_NUMERIC:
-                strCell = String.valueOf(cell[j].getCell().getNumericCellValue());
-                break;
-            case HSSFCell.CELL_TYPE_STRING:
-                strCell = cell[j].getCell().getStringCellValue();
-                break;
-            case HSSFCell.CELL_TYPE_BOOLEAN:
-                strCell = String.valueOf(cell[j].getCell().getBooleanCellValue());
-                break;
-            case HSSFCell.CELL_TYPE_FORMULA:
-
-                try {
-                    strCell = String.valueOf(cell[j].getCell().getNumericCellValue());
-                } catch (IllegalStateException e) {
-                    strCell = String.valueOf(cell[j].getCell().getRichStringCellValue());
-                }
-                break;
-            default:
-                strCell = "";
-            }
-
-            if (cell[j].getCell().getCellStyle().getDataFormatString().contains("0.00%")) {
-                try {
-                    double dbCell = Double.valueOf(strCell);
-                    strCell = new DecimalFormat("#.00").format(dbCell * 100) + "%";
-                } catch (NumberFormatException e) {
-                }
-            }
-
+            String strCell = ExcelUtil.getCellValueString(sheet, rowIdx, j);
             grid.setText(strCell.matches("\\w*\\.0") ? strCell.substring(0, strCell.length() - 2) : strCell);
-
-            grids.add(grid);
+            gridInfos.add(grid);
         }
     }
 
-    private static void exportImage(int imageWidth, int imageHeight, List <Grid> grids,String fileName) throws IOException {
+    /**
+     * 从Excel中获取文件名称
+     *
+     * @param sheet
+     * @param rowIdx
+     * @return
+     */
+    private String getFileNameFromExcel(Sheet sheet, int rowIdx) {
+        return ExcelUtil.getCellValueString(sheet, rowIdx, imageFileNameColIdx);
+    }
+
+    /**
+     * 导出图片
+     *
+     * @param imageWidth
+     * @param imageHeight
+     * @param grids
+     * @param filePath
+     * @param fileName
+     * @param formatName
+     * @throws IOException
+     */
+    private void exportImage(int imageWidth, int imageHeight, List <GridInfo> grids, String filePath, String fileName, String formatName) throws IOException {
         BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = image.createGraphics();
         // 平滑字体
@@ -360,43 +177,58 @@ public class Excel2Image {
         g2d.setRenderingHint(SunHints.KEY_TEXT_ANTIALIAS_LCD_CONTRAST, 140);
         g2d.setRenderingHint(SunHints.KEY_FRACTIONALMETRICS, SunHints.VALUE_FRACTIONALMETRICS_OFF);
         g2d.setRenderingHint(SunHints.KEY_RENDERING, SunHints.VALUE_RENDER_DEFAULT);
-
         g2d.setColor(Color.white);
+        //填充图形矩形
         g2d.fillRect(0, 0, imageWidth, imageHeight);
-
         // 绘制表格
-        parseGrids(grids, g2d);
-
+        parseGraphics2D(grids, g2d);
         g2d.dispose();
-        ImageIO.write(image, "png", new File("C:\\Users\\LD\\Desktop\\" + fileName + ".png"));
-
+        if (!new File(filePath).exists()) {
+            new File(filePath).mkdir();
+        }
+        imageFormat = StringUtils.isNotBlank(imageFormat) ? imageFormat : "png";
+        ImageIO.write(image, formatName, new File(filePath.concat("/").concat(fileName).concat(".").concat(formatName)));
     }
 
     /**
-     * 判断Excel中的单元格是否为合并单元格
+     * 解析2D图形对象
      *
-     * @param row
-     * @param col
-     * @param rangeAddress
-     * @return 如果不是合并单元格返回{-1,-1},如果是合并单元格并且是一个单元格返回{lastRow,lastCol},
-     * 如果是合并单元格并且不是第一个格子返回{0,0}
+     * @param grids
+     * @param g2d
      */
-    private static int[] isInMerged(int row, int col, List <CellRangeAddress> rangeAddress) {
-        int[] isInMergedStatus = {-1, -1};
-        for (CellRangeAddress cra : rangeAddress) {
-            if (row == cra.getFirstRow() && col == cra.getFirstColumn()) {
-                isInMergedStatus[0] = cra.getLastRow();
-                isInMergedStatus[1] = cra.getLastColumn();
-                return isInMergedStatus;
+    private void parseGraphics2D(List <GridInfo> grids, Graphics2D g2d) {
+        // 绘制表格
+        for (GridInfo g : grids) {
+            if (!g.isShow()) {
+                continue;
             }
-            if (row >= cra.getFirstRow() && row <= cra.getLastRow()) {
-                if (col >= cra.getFirstColumn() && col <= cra.getLastColumn()) {
-                    isInMergedStatus[0] = 0;
-                    isInMergedStatus[1] = 0;
-                    return isInMergedStatus;
-                }
-            }
+            // 绘制背景色
+            g2d.setColor(g.getBgColor() == null ? Color.white : g.getBgColor());
+            g2d.fillRect(float2Int(g.getX()), float2Int(g.getY()), float2Int(g.getWidth()), float2Int(g.getHeight()));
+
+            // 绘制边框
+            g2d.setColor(Color.black);
+            g2d.setStroke(new BasicStroke(0.5f));
+            g2d.drawRect(float2Int(g.getX()), float2Int(g.getY()), float2Int(g.getWidth()), float2Int(g.getHeight()));
+
+            // 绘制文字,居中显示
+            g2d.setColor(g.getFtColor());
+            FontMetrics fm = g2d.getFontMetrics(g.getFont());
+            // 获取将要绘制的文字宽度
+            int strWidth = fm.stringWidth(g.getText());
+            //设置字体
+            g2d.setFont(g.getFont());
+            //计算居中位置
+            g2d.drawString(g.getText(), g.getX() + (g.getWidth() - strWidth) / 2,
+                    g.getY() + (g.getHeight() - g.getFont().getSize()) / 2 + g.getFont().getSize());
         }
-        return isInMergedStatus;
+    }
+
+    private int float2Int(float f) {
+        return (int) (f + 0.5);
+    }
+
+    public enum SheetTypeEnum {
+        IDX, NAME
     }
 }
