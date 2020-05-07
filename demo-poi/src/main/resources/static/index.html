@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Excel导出Images</title>
+    <script type="text/javascript"  language="javascript">
+        var open = true;
+        function exportImages(){
+            alert(document.getElementById("open").value)
+            var url = "http://127.0.0.1:8081/excel2images/exportLineByline"
+            var request = new XMLHttpRequest();
+            var data = {
+                excelFile: document.getElementById("excelFile").value,
+                exportDir: document.getElementById("exportPath").value,
+                openAfterExport: open
+            }
+            request.open("POST", url);
+            request.send(data)
+        }
+        function checkOpen() {
+            open = !open;
+            alert(open)
+        }
+    </script>
+</head>
+<body>
+<h3>选择文件：</h3>
+<table>
+    <tr>
+        <td><input type="file" id="excelFile"></td>
+    </tr>
+</table>
+<h3>选择导出路径：</h3>
+<table class="table">
+    <tr>
+        <td> <input type="text" name="exportPath" id="exportPath" /></td>
+    </tr>
+</table>
+<h3>
+    <input name="open" id="open" value="true" type="checkbox" checked="checked" onclick="checkOpen()"/>导出后是否打开
+</h3>
+<h3></h3>
+<table>
+    <tr>
+        <td><button class="top" onmousedown="exportImages()" onmouseup="">确定导出</button></td>
+    </tr>
+</table>
+</body>
+</html>

@@ -186,7 +186,7 @@ public class Excel2Image {
         if (!new File(filePath).exists()) {
             new File(filePath).mkdir();
         }
-        imageFormat = StringUtils.isNotBlank(imageFormat) ? imageFormat : "png";
+        formatName = StringUtils.isNotBlank(formatName) ? formatName : "png";
         ImageIO.write(image, formatName, new File(filePath.concat("/").concat(fileName).concat(".").concat(formatName)));
     }
 
