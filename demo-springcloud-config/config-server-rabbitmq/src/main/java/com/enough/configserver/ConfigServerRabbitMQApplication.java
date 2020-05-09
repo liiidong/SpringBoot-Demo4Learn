@@ -6,10 +6,10 @@ import org.springframework.cloud.config.server.EnableConfigServer;
 
 @SpringBootApplication
 @EnableConfigServer
-public class ConfigServerKafkaApplication {
+public class ConfigServerRabbitMQApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ConfigServerKafkaApplication.class, args);
+        SpringApplication.run(ConfigServerRabbitMQApplication.class, args);
     }
 
 }
