@@ -17,7 +17,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Data
 public class SysUserRole implements Serializable {
     @Id
-    @GeneratedValue
     @GeneratedValue(generator = "JDBC")
     private Integer id;
 

@@ -17,7 +17,6 @@ import java.util.Date;
 @Data
 public class SysUser implements Serializable {
     @Id
-    @GeneratedValue
     @GeneratedValue(generator = "JDBC")
     private Integer id;
 
