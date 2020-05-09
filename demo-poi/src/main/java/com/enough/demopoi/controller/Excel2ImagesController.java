@@ -1,12 +1,10 @@
 package com.enough.demopoi.controller;
 
+import com.enough.common.model.CommonBuilder;
 import com.enough.common.model.ReturnResult;
 import com.enough.demopoi.images.Excel2Image;
 import com.enough.demopoi.images.Excel2ImagesParam;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @program: SpringBoot-Demo4Learn
@@ -32,12 +30,23 @@ public class Excel2ImagesController {
         excel2Image.setImageFileNameColIdx(2);
         excel2Image.setImageFormat("JPG");
         boolean exportRst = excel2Image.excelRow2Images(param.getExportDir());
-        if(exportRst && param.isOpenAfterExport()){
-            String cmdDir[] = { "explorer.exe", param.getExportDir() };
+        if (exportRst && param.isOpenAfterExport()) {
+            String cmdDir[] = {"explorer.exe", param.getExportDir()};
             Runtime.getRuntime().exec(cmdDir);
         }
         System.out.println("结束时间：" + System.currentTimeMillis());
         System.out.println("用时：" + (System.currentTimeMillis() - startTime) / 1000);
         return ReturnResult.structure(exportRst, String.class).build();
+    }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello";
+    }
+
+    @GetMapping("/xxx")
+    public Excel2ImagesParam Excel2ImagesParam() {
+        return CommonBuilder.of(Excel2ImagesParam::new).with(Excel2ImagesParam::setExcelFile, "dsadsa").with(Excel2ImagesParam::setExportDir, "xxxxxxxxxx")
+                .build();
     }
 }

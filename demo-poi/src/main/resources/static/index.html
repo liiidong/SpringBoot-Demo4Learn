@@ -6,16 +6,29 @@
     <script type="text/javascript"  language="javascript">
         var open = true;
         function exportImages(){
-            alert(document.getElementById("open").value)
-            var url = "http://127.0.0.1:8081/excel2images/exportLineByline"
+            var url = "http://127.0.0.1:8888/excel2images/exportLineByline"
             var request = new XMLHttpRequest();
+            var formData = new FormData();
+            var excelFile = document.getElementById("excelFile").value;
+            if(excelFile == null || excelFile == ''){
+                alert("请选择Excel文件！")
+                return;
+            }
+            var exportPath = document.getElementById("exportPath").value;
+            if(exportPath == null || exportPath == ''){
+                alert("请设置导出路径！")
+                return;
+            }
+            formData.append('excelFile',excelFile);
+            formData.append('exportDir', exportPath);
+            formData.append('openAfterExport', open);
             var data = {
-                excelFile: document.getElementById("excelFile").value,
-                exportDir: document.getElementById("exportPath").value,
+                excelFile: excelFile,
+                exportDir: exportPath,
                 openAfterExport: open
             }
             request.open("POST", url);
-            request.send(data)
+            request.send(JSON.stringify(data))
         }
         function checkOpen() {
             open = !open;
@@ -26,8 +39,11 @@
 <body>
 <h3>选择文件：</h3>
 <table>
+<!--    <tr>-->
+<!--        <td><input type="file" id="excelFile"></td>-->
+<!--    </tr>-->
     <tr>
-        <td><input type="file" id="excelFile"></td>
+        <td> <input type="text" name="excelFile" id="excelFile" size="300"/></td>
     </tr>
 </table>
 <h3>选择导出路径：</h3>

@@ -15,4 +15,27 @@ public class Excel2ImagesParam {
     private String exportDir;
     private boolean openAfterExport;
 
+    public String getExcelFile() {
+        return excelFile;
+    }
+
+    public void setExcelFile(String excelFile) {
+        this.excelFile = excelFile;
+    }
+
+    public String getExportDir() {
+        return exportDir;
+    }
+
+    public void setExportDir(String exportDir) {
+        this.exportDir = exportDir;
+    }
+
+    public boolean isOpenAfterExport() {
+        return openAfterExport;
+    }
+
+    public void setOpenAfterExport(boolean openAfterExport) {
+        this.openAfterExport = openAfterExport;
+    }
 }
