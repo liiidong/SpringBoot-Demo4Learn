@@ -3,6 +3,7 @@ package com.enough.serviceconfigmgt.controller;
 import com.enough.common.model.ReturnResult;
 import com.enough.configmanager.dto.ConfigPropertyDTO;
 import com.enough.configmanager.service.ConfigPropertyService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -69,7 +70,8 @@ public class ConfigPropertiesController {
     }
 
     @PostMapping("/refresh")
-    public void refresh() {
+    public boolean refresh() {
         configPropertyService.refreshTest();
+        return true;
     }
 }
