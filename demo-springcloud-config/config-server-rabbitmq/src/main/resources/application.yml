@@ -45,3 +45,13 @@ management:  #actuator
     health:
       show-details: ALWAYS
 
+local-address:
+  ${spring.cloud.client.ip-address}:${server.port}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}

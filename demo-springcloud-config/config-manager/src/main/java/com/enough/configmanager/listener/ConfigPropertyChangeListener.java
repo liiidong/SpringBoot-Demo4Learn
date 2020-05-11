@@ -3,6 +3,7 @@ package com.enough.configmanager.listener;
 import com.enough.configmanager.event.ConfigPropertyChangeEvent;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,8 @@ public class ConfigPropertyChangeListener implements ApplicationListener <Config
 
     //@Value("${server.port}")
     //private String serverPort;
+    @Value("${local-address:empty}")
+    private String localAddress;
 
     @Async
     @Override

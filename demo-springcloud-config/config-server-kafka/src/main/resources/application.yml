@@ -19,8 +19,8 @@ spring:
         enabled: true
   kafka:
     producer:
-#      bootstrap-servers: #指定 kafka 的服务地址，多个使用英文逗号分隔；
-#        - localhost:9092
+    #      bootstrap-servers: #指定 kafka 的服务地址，多个使用英文逗号分隔；
+    #        - localhost:9092
     bootstrap-servers:
       - localhost:9092
 server:
@@ -44,3 +44,14 @@ management:  #actuator
     health:
       show-details: ALWAYS
 
+local-address:
+  ${spring.cloud.client.ip-address}:${server.port}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/
+  instance:
+    prefer-ip-address: true
+    # Instance ID使用IP+Port形式
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
