@@ -17,15 +17,16 @@ spring:
       enabled: true
       refresh: # 开启 bus 刷新功能；
         enabled: true
-  kafka:
-    producer:
-#      bootstrap-servers: #指定 kafka 的服务地址，多个使用英文逗号分隔；
-#        - localhost:9092
-    bootstrap-servers:
-      - localhost:9092
+  #使用rabbitmq刷新配置，客户端也需要配置相同的信息
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
 server:
   port: 8769
-spring.cloud.config.server.jdbc.sql: SELECT propertyKey, propertyValue FROM config_properties WHERE APPLICATION=? and PROFILE=? and LABEL=?
+spring.cloud.config.server.jdbc.sql: SELECT property_key, property_value FROM config_properties WHERE APPLICATION=? and PROFILE=? and LABEL=?
 #SpringCloud 1.5版本暴露接口，暴露/bus-refresh接口
 #management.security.enabled=false
 #SpringCloud 2.0.0版本以后暴露接口方式

@@ -5,6 +5,7 @@ import com.enough.configmanager.dao.ConfigPropertyMapper;
 import com.enough.configmanager.dto.ConfigPropertyDTO;
 import com.enough.configmanager.event.ConfigPropertyChangeEvent;
 import com.enough.configmanager.service.ConfigPropertyService;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -114,5 +115,10 @@ public class ConfigPropertyServiceImpl implements ConfigPropertyService {
             applicationContext.publishEvent(new ConfigPropertyChangeEvent(this, ConfigPropertyChangeEvent.OperateType.UPDATE, configPropertyDTOS));
         }
         return rst;
+    }
+
+    @Override
+    public void refreshTest() {
+        applicationContext.publishEvent(new ConfigPropertyChangeEvent(this, ConfigPropertyChangeEvent.OperateType.UPDATE, Lists.newArrayList()));
     }
 }

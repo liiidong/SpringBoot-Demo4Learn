@@ -11,14 +11,13 @@ spring:
     bus:
       refresh: # 开启 bus 刷新功能；
         enabled: true
-  kafka:
-#    consumer:
-#      bootstrap-servers: #指定 kafka 的服务地址
-#        - localhost:9092
-    bootstrap-servers:
-      - localhost:9092
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
-##使用kafka刷新配置的时候，不需要开启监控端口配置，而是通过消息广播通知更新
+##使用rabbitmq刷新配置的时候，不需要开启客户端的监控端口配置，而是通过消息广播通知更新
 #management:
 #  endpoints:
 #    web:

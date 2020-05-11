@@ -67,4 +67,9 @@ public class ConfigPropertiesController {
         }
         return ReturnResult.failed(Boolean.class).msg("添加失败！").build();
     }
+
+    @PostMapping("/refresh")
+    public void refresh() {
+        configPropertyService.refreshTest();
+    }
 }
