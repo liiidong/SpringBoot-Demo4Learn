@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @create: 2020/04/29
  */
 @RestController
-@RequestMapping("/kafka")
+@RequestMapping("/rabbit")
 @RefreshScope
 public class ConfigClientRabbitMQController {
 

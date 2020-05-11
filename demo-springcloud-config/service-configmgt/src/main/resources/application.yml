@@ -9,5 +9,5 @@ spring:
     password: lidong123
     driver-class-name: com.mysql.cj.jdbc.Driver
 mybatis:
-  #classpath:ÕÒclassÄ¿Â¼ÏÂµÄmapperÎÄ¼ş£¬classpath*£ºÕÒËùÓĞµÄjarÏÂµÄmapperÎÄ¼ş£¬±éÀú£¬Ğ§ÂÊµÍ
+  #classpath:æ‰¾classç›®å½•ä¸‹çš„mapperæ–‡ä»¶ï¼Œclasspath*ï¼šæ‰¾æ‰€æœ‰çš„jarä¸‹çš„mapperæ–‡ä»¶ï¼Œéå†ï¼Œæ•ˆç‡ä½
   mapper-locations: classpath*:mapper/*.xml
