@@ -6,6 +6,7 @@ import com.enough.configmanager.service.ConfigPropertyService;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class ConfigPropertiesController {
 
     @Autowired
     private ConfigPropertyService configPropertyService;
+
 
     @PostMapping("/query")
     public ReturnResult <List> query(@RequestBody ConfigPropertyDTO searchParam) {

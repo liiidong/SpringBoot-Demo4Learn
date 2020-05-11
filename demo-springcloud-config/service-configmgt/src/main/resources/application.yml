@@ -11,3 +11,15 @@ spring:
 mybatis:
   #classpath:找class目录下的mapper文件，classpath*：找所有的jar下的mapper文件，遍历，效率低
   mapper-locations: classpath*:mapper/*.xml
+
+local-address:
+  ${spring.cloud.client.ip-address}:${server.port}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/
+  instance:
+    prefer-ip-address: true
+    # Instance ID使用IP+Port形式
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
