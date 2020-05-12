@@ -1,21 +1,16 @@
-package com.supermap.gaf.configserver;
+package com.enough.demo.starter.configserver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 
-/**
- * @author <a href="mailto:wenyuanwu@gtmap.cn">wenyuanwu</a>
- * @version 1.0 2019-9-5
- * @description 监听程序是否懂成功
- */
-public class ApplicationReadyEventListener implements ApplicationListener<ApplicationReadyEvent> {
+public class ApplicationReadyEventListener implements ApplicationListener <ApplicationReadyEvent> {
 
     @Autowired
-    private ScheduleRefreshTask scheduleRefreshTask;
+    private com.enough.demo.starter.configserver.ScheduleRefreshTask scheduleRefreshTask;
 
     @Autowired
-    private RefreshConfig refreshConfig;
+    private com.enough.demo.starter.configserver.RefreshConfig refreshConfig;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {

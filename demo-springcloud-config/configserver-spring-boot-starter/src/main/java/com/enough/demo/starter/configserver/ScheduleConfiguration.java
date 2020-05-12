@@ -1,4 +1,4 @@
-package com.supermap.gaf.configserver;
+package com.enough.demo.starter.configserver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

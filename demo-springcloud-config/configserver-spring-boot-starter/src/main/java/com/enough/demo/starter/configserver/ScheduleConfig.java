@@ -1,4 +1,4 @@
-package com.supermap.gaf.configserver;
+package com.enough.demo.starter.configserver;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

@@ -1,23 +1,19 @@
-package com.supermap.gaf.configserver;
+package com.enough.demo.starter.configserver;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * @author <a href="mailto:wenyuanwu@gtmap.cn">wenyuanwu</a>
- * @version 1.0 2019-9-5
- * @description 刷新配置方法
- */
+@Slf4j
+@Component
 public class RefreshConfig {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
     private boolean enable = false;
 
     @Autowired
@@ -25,8 +21,6 @@ public class RefreshConfig {
 
     @Autowired
     private ApplicationContext applicationContext;
-
-
 
     public void setEnable(boolean enable) {
         this.enable = enable;
@@ -40,13 +34,13 @@ public class RefreshConfig {
 
     }
 
-    public Collection<String> refresh() {
+    public Collection <String> refresh() {
         if (enable) {
-            Set<String> keys = contextRefresher.refresh();
-            logger.info("配置刷新:{}",keys);
+            Set <String> keys = contextRefresher.refresh();
+            log.info("配置刷新:{}", keys);
             return keys;
         } else {
-            return new HashSet<>();
+            return new HashSet <>();
         }
     }
 

@@ -22,6 +22,7 @@
         <module>config-client-rabbitmq</module>
         <module>config-manager</module>
         <module>service-configmgt</module>
+        <module>configserver-spring-boot-starter</module>
     </modules>
 
 </project>
