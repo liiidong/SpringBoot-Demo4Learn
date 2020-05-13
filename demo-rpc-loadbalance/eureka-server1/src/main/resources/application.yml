@@ -1,0 +1,12 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: eureka-server
+eureka:
+  client:
+    register-with-eureka: true #高可用的是就要开启注册自己了
+    fetch-registry: true #同步其他相邻eureka节点数据，默认true
+    serviceUrl:
+      #defaultZone: http://127.0.0.1:${server.port}/eureka/
+      defaultZone: http://eureka1:9002/eureka/ #注册到9002 eurekaServer2上

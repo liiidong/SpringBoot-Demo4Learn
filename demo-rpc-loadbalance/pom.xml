@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>SpringBoot-Demo4Learn</artifactId>
+        <groupId>com.enough</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>demo-rpc-loadbalance</artifactId>
+    <modules>
+        <module>eureka-server1</module>
+        <module>eureka-server2</module>
+        <module>erueka-client1</module>
+        <module>erueka-client2</module>
+    </modules>
+
+</project>
