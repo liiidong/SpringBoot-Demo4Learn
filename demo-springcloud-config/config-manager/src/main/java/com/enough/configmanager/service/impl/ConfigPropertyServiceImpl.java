@@ -118,7 +118,7 @@ public class ConfigPropertyServiceImpl implements ConfigPropertyService {
     }
 
     @Override
-    public void refreshTest() {
+    public void refreshConfig() {
         applicationContext.publishEvent(new ConfigPropertyChangeEvent(this, ConfigPropertyChangeEvent.OperateType.UPDATE, Lists.newArrayList()));
     }
 }

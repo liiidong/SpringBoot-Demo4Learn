@@ -62,5 +62,8 @@ public interface ConfigPropertyService {
      */
     boolean updateConfigProperties(List <ConfigPropertyDTO> configPropertyDTOS);
 
-    void refreshTest();
+    /**
+     * 刷新配置
+     */
+    void refreshConfig();
 }

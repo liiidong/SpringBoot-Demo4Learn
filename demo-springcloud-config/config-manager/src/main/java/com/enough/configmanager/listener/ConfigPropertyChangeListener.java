@@ -1,5 +1,6 @@
 package com.enough.configmanager.listener;
 
+import com.enough.common.rest.utils.OKHttpUtil;
 import com.enough.configmanager.event.ConfigPropertyChangeEvent;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -26,22 +27,12 @@ public class ConfigPropertyChangeListener implements ApplicationListener <Config
      */
     private static final String URL = "http://127.0.0.1:8769/actuator/bus-refresh";
 
-    //@Value("${server.port}")
-    //private String serverPort;
     @Value("${local-address:empty}")
     private String localAddress;
 
     @Async
     @Override
     public void onApplicationEvent(ConfigPropertyChangeEvent configPropertyChangeEvent) {
-        //switch (configPropertyChangeEvent.getOperateType()) {
-        //case ADD:
-        //    break;
-        //case UPDATE:
-        //    break;
-        //case DELETE:
-        //    break;
-        //}
         try {
             refreshWithOKHttp();
         } catch (InterruptedException e) {
@@ -53,25 +44,7 @@ public class ConfigPropertyChangeListener implements ApplicationListener <Config
      * 使用OKHttp发送【异步】请求
      */
     private void refreshWithOKHttp() throws InterruptedException {
-        //1、创建OkHttpClient对象实例
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().readTimeout(30, TimeUnit.SECONDS).build();
-        //2、创建Request对象
-        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
-        RequestBody requestBody = RequestBody.create(mediaType, "{}");
-        Request request = new Request.Builder().url(URL).post(requestBody).build();
-        //3、执行Request请求
-        Call call = okHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                log.error("onFailure: ");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                log.debug("onResponse: " + response.body().string());
-            }
-        });
+        OKHttpUtil.postUseOkhttpAsync(URL,"{}");
         //等待请求线程，否则主线程结束无法看到请求结果
         Thread.currentThread().join();
     }
