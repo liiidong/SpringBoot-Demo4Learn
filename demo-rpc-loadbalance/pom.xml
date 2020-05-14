@@ -11,10 +11,10 @@
 
     <artifactId>demo-rpc-loadbalance</artifactId>
     <modules>
-        <module>eureka-server1</module>
-        <module>eureka-server2</module>
+        <module>eureka-server</module>
         <module>erueka-client1</module>
         <module>erueka-client2</module>
+        <module>rpc-balance-demo</module>
     </modules>
 
 </project>

@@ -1,4 +1,4 @@
-package com.enough.eruekaclient1.controller;
+package com.enough.eruekaclient2.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,7 @@ public class EurekClient2Controler {
     @Value("${eureka.instance.hostname}")
     private String hostname;
 
-    @GetMapping("server")
+    @GetMapping("/server")
     public String server(){
         return new StringBuilder(hostname).append(port).toString();
     }

@@ -1,0 +1,22 @@
+server:
+  port: 9000
+  #servlet:
+    #context-path: /rpcBalanced #servlet根路径
+spring:
+  application:
+    name: rpc-balance-demo
+eureka:
+  client:
+    service-url:
+      defalutZone: http://eureka1:8761/eureka/,http://eureka2:8762/eureka/
+  instance:
+    hostname: localhost
+    instance-id:  rpc-balance-demo
+    prefer-ip-address: true
+
+
+#配置rpc服务信息，提供restTemplate远程调用时使用
+rpcServices:
+  serviceName: eureka-client
+  contextPath: /eurekaClient
+  getServerUrl: /server
