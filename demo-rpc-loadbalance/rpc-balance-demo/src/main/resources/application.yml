@@ -1,7 +1,7 @@
 server:
   port: 9000
-  #servlet:
-    #context-path: /rpcBalanced #servlet¸ùÂ·¾¶
+    #servlet:
+  #context-path: /rpcBalanced #servletæ ¹è·¯å¾„
 spring:
   application:
     name: rpc-balance-demo
@@ -14,8 +14,12 @@ eureka:
     instance-id:  rpc-balance-demo
     prefer-ip-address: true
 
+feign:
+  hystrix:
+    # å¼€å¯Feignç†”æ–­æœºåˆ¶
+    enabled: true
 
-#ÅäÖÃrpc·şÎñĞÅÏ¢£¬Ìá¹©restTemplateÔ¶³Ìµ÷ÓÃÊ±Ê¹ÓÃ
+#é…ç½®rpcæœåŠ¡ä¿¡æ¯ï¼Œæä¾›restTemplateè¿œç¨‹è°ƒç”¨æ—¶ä½¿ç”¨
 rpcServices:
   serviceName: eureka-client
   contextPath: /eurekaClient
