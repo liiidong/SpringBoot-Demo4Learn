@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author: lidong
  * @create: 2020/05/14
  */
-@FeignClient(name = "eureka-client", fallback = FeignServiceImpl.class) //name的值设置 客户端注册在eureka上的名字，参考eureka-clinet*的spring.application.name
+@FeignClient(name = "eureka-client", fallback = FeignServiceImpl.class)
+//name的值设置 客户端注册在eureka上的名字，参考eureka-clinet*的spring.application.name
 public interface FeignService {
 
     @GetMapping("/eurekaClient/server")

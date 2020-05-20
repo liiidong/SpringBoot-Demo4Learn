@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableFeignClients //开启openFengin客户端
-@EnableHystrix //开启服务熔断降级
+@EnableHystrix //RestTemplate开启服务熔断降级
 @EnableCircuitBreaker //Feign开启熔断机制
 public class RpcBalanceDemoApplication {
 
