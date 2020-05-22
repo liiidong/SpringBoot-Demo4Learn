@@ -18,6 +18,6 @@ public class GasDecoratorImpl extends AttachedPropertiesDecorator {
     }
 
     private void addWheel() {
-        System.out.println("hava some gas");
+        System.out.print("hava some gas!");
     }
 }

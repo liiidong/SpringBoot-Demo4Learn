@@ -18,6 +18,6 @@ public class WheelDecoratorImpl extends AttachedPropertiesDecorator {
     }
 
     private void addWheel() {
-        System.out.println("hava 4 wheels");
+        System.out.print("hava 4 wheels!");
     }
 }

@@ -9,6 +9,6 @@ package com.enough.demo.designpatterns.decorator;
 public class Car implements ICar {
     @Override
     public void getCar() {
-        System.out.println("this is a car");
+        System.out.print("this is a car!");
     }
 }

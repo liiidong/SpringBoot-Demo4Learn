@@ -1,5 +1,7 @@
 package com.enough.demo.designpatterns.decorator;
 
+import org.junit.Test;
+
 /**
  * @program: SpringBoot-Demo4Learn
  * @description:
@@ -15,5 +17,6 @@ public class DecoratorTest {
         ICar car3 = new GasDecoratorImpl(car2);
         ICar car4 = new GPSDecoratorImpl(car3);
         car4.getCar();
+        System.out.println();
     }
 }

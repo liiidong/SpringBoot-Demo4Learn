@@ -18,6 +18,6 @@ public class GPSDecoratorImpl extends AttachedPropertiesDecorator {
     }
 
     private void addWheel() {
-        System.out.println("hava a GPS");
+        System.out.print("hava a GPS!");
     }
 }
