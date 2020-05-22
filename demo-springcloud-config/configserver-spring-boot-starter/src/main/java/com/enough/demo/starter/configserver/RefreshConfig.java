@@ -11,15 +11,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Slf4j
-@Component
 public class RefreshConfig {
 
     private boolean enable = false;
 
-    @Autowired
+    @Autowired(required = false)
     private ContextRefresher contextRefresher;
 
-    @Autowired
+    @Autowired(required = false)
     private ApplicationContext applicationContext;
 
     public void setEnable(boolean enable) {

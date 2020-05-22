@@ -24,7 +24,7 @@ public class ScheduleRefreshTask {
 
     private boolean readyRefresh = false;
 
-    @Autowired
+    @Autowired(required = false)
     private RefreshConfig refreshConfig;
 
     public void setScheduleConfig(ScheduleConfig scheduleConfig) {
