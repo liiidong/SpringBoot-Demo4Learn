@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <description>oauth2-sso实现案例module</description>
     <artifactId>demo-oauth2-sso</artifactId>
+    <packaging>pom</packaging>
     <modules>
         <module>oauth2-sso-auth-server</module>
     </modules>
