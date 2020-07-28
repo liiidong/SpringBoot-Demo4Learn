@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @create: 2020/01/22
  */
 @ControllerAdvice
+//@RestControllerAdvice
 public class GlobalExcptionHander {
 
     /**
      * 异常处理器
      * <p>
-     * 注解ResponseBody必须的
-     * ResponseBody 的 value指向最基本异常Exception,因为自定义的异常一般继承RuntimeException，RuntimeException继承Exception
+     * 注解ResponseBody必须的，使用//@RestControllerAdvice无需ResponseBody
+     * ExceptionHandler 的 value指向最基本异常Exception,因为自定义的异常一般继承RuntimeException，RuntimeException继承Exception
      * 当然也value可以赋值为自己的异常，或在方法里根据Exception.class进行分类逻辑处理
      *
      * @param e
