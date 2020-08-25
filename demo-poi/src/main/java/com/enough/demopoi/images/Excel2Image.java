@@ -15,6 +15,7 @@ import sun.awt.SunHints;
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -132,11 +133,12 @@ public class Excel2Image {
             }
             // 设置字体
             org.apache.poi.ss.usermodel.Font font = sheet.getWorkbook().getFontAt(cs.getFontIndex());
+            font.setColor(font.getColor());
             grid.setFont(new Font(font.getFontName(), cell.getCellStyle().getBorderBottomEnum().getCode(), (int) (font.getFontHeightInPoints() * MULTIPLE)));
             // 设置字体前景色
             if (font instanceof XSSFFont) {
                 XSSFFont xf = (XSSFFont) font;
-                grid.setFtColor(new Color(xf.getColor()));
+                grid.setFtColor(new Color(xf.getXSSFColor().getIndex()));
             }
             // 设置文本
             String strCell = ExcelUtil.getCellValueString(sheet, rowIdx, j);
@@ -153,7 +155,7 @@ public class Excel2Image {
      * @return
      */
     private String getFileNameFromExcel(Sheet sheet, int rowIdx) {
-        return ExcelUtil.getCellValueString(sheet, rowIdx, imageFileNameColIdx);
+        return rowIdx + ExcelUtil.getCellValueString(sheet, rowIdx, imageFileNameColIdx);
     }
 
     /**

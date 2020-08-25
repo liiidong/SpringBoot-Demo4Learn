@@ -1,9 +1,19 @@
 package com.enough.demo.globalexception.exception;
 
 import com.enough.common.model.ReturnResult;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @program: demo
@@ -28,5 +38,22 @@ public class GlobalExcptionHander {
     @ExceptionHandler(value = Exception.class)
     public ReturnResult<?> exceptionHander(Exception e) {
         return ReturnResult.failed(Object.class).msg(e.getMessage()).build();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ReturnResult<?> handle(ValidationException exception) {
+        if(exception instanceof ConstraintViolationException){
+            ConstraintViolationException exs = (ConstraintViolationException) exception;
+            Set <ConstraintViolation <?>> violations = exs.getConstraintViolations();
+            List <String> msgs = new ArrayList <>();
+            for (ConstraintViolation<?> item : violations) {
+                //打印验证不通过的信息
+                msgs.add(item.getMessage());
+            }
+            return ReturnResult.failed(String.class).msg(StringUtils.join(msgs,",\n")).build();
+        }
+        return ReturnResult.failed(Object.class).msg(exception.getMessage()).build();
     }
 }
