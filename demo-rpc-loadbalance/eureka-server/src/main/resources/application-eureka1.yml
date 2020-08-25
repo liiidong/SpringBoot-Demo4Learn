@@ -1,0 +1,14 @@
+server:
+  port: 8761
+spring:
+  application:
+    name: eureka-server
+eureka:
+  client:
+    register-with-eureka: true #高可用的是就要开启注册自己了
+    fetch-registry: true #同步其他相邻eureka节点数据，默认true
+    serviceUrl:
+      #defaultZone: http://127.0.0.1:${server.port}/eureka/
+      defaultZone: http://eureka2:8762/eureka/ #注册到8761 eurekaServer2上
+  instance:
+    hostname: eureka1

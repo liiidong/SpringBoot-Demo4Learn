@@ -9,9 +9,9 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone:  http://eureka1:9000/eureka/
+      defaultZone:  http://eureka1:8761/eureka/,http://eureka2:8762/eureka/
   instance:
     hostname: localhost
-    instance-id: eurekaClient1  #实例注册到eureka服务器上的唯一实例ID
-    lease-renewal-interval-in-seconds: 30   #过多长时间发送心跳给eureka服务器，表明它仍然活着，默认为30s
-    prefer-ip-address: true  #显示IP地址,便于在eureka-server控制台点击client名，通过ip:port直接访问服务
+    instance-id: eurekaClient1  #瀹炰緥娉ㄥ唽鍒癳ureka鏈嶅姟鍣ㄤ笂鐨勫敮涓�瀹炰緥ID
+    lease-renewal-interval-in-seconds: 30   #杩囧闀挎椂闂村彂閫佸績璺崇粰eureka鏈嶅姟鍣紝琛ㄦ槑瀹冧粛鐒舵椿鐫�锛岄粯璁や负30s
+    prefer-ip-address: true  #鏄剧ずIP鍦板潃,渚夸簬鍦╡ureka-server鎺у埗鍙扮偣鍑籧lient鍚嶏紝閫氳繃ip:port鐩存帴璁块棶鏈嶅姟

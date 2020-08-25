@@ -20,6 +20,8 @@
         <module>demo-springcloud-config</module>
         <module>demo-poi</module>
         <module>demo-rpc-loadbalance</module>
+        <module>demo-springcloud</module>
+        <module>demo-designPatterns</module>
     </modules>
 
     <build>

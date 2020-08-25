@@ -1,10 +1,9 @@
 package com.enough.demopoi;
 
-import cn.afterturn.easypoi.configuration.EasyPoiAutoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = "com.enough.demopoi.*", exclude = EasyPoiAutoConfiguration.class)
+@SpringBootApplication(scanBasePackages = "com.enough.demopoi.*")
 public class DemoPoiApplication {
 
     public static void main(String[] args) {

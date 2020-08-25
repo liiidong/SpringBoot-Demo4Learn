@@ -1,0 +1,15 @@
+server:
+  port: 8501
+spring:
+  application:
+    name: demo-consul-client
+  cloud:
+    # 配置consul相关信息
+    consul:
+      host: localhost
+      port: 8500
+      # 配置服务发现相关信息
+      discovery:
+        health-check-path: ${management.contextPath}/health
+        health-check-interval: 15s
+        instance-id: demo-consul-client
