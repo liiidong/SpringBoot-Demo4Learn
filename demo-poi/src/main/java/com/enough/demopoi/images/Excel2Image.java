@@ -15,7 +15,6 @@ import sun.awt.SunHints;
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -127,18 +126,20 @@ public class Excel2Image {
             grid.setColIdx(j);
             grid.setShow(ExcelUtil.checkColHidden(rowIdx, j, sheet));
             // 单元格背景颜色
-            CellStyle cs = cell.getCellStyle();
-            if (cs.getFillPattern() == cs.getFillBackgroundColor()) {
-                grid.setBgColor((Color) cell.getCellStyle().getFillForegroundColorColor());
-            }
-            // 设置字体
-            org.apache.poi.ss.usermodel.Font font = sheet.getWorkbook().getFontAt(cs.getFontIndex());
-            font.setColor(font.getColor());
-            grid.setFont(new Font(font.getFontName(), cell.getCellStyle().getBorderBottomEnum().getCode(), (int) (font.getFontHeightInPoints() * MULTIPLE)));
-            // 设置字体前景色
-            if (font instanceof XSSFFont) {
-                XSSFFont xf = (XSSFFont) font;
-                grid.setFtColor(new Color(xf.getXSSFColor().getIndex()));
+            if(cell != null) {
+                CellStyle cs = cell.getCellStyle();
+                if (cs.getFillPatternEnum().getCode() == cs.getFillBackgroundColor()) {
+                    grid.setBgColor((Color) cell.getCellStyle().getFillForegroundColorColor());
+                }
+                // 设置字体
+                org.apache.poi.ss.usermodel.Font font = sheet.getWorkbook().getFontAt(cs.getFontIndex());
+                font.setColor(font.getColor());
+                grid.setFont(new Font(font.getFontName(), cell.getCellStyle().getBorderBottomEnum().getCode(), (int) (font.getFontHeightInPoints() * MULTIPLE)));
+                // 设置字体前景色
+                if (font instanceof XSSFFont) {
+                    XSSFFont xf = (XSSFFont) font;
+                    grid.setFtColor(new Color(xf.getXSSFColor().getIndex()));
+                }
             }
             // 设置文本
             String strCell = ExcelUtil.getCellValueString(sheet, rowIdx, j);
@@ -186,7 +187,7 @@ public class Excel2Image {
         parseGraphics2D(grids, g2d);
         g2d.dispose();
         if (!new File(filePath).exists()) {
-            new File(filePath).mkdir();
+            new File(filePath).mkdirs();
         }
         formatName = StringUtils.isNotBlank(formatName) ? formatName : "png";
         ImageIO.write(image, formatName, new File(filePath.concat("/").concat(fileName).concat(".").concat(formatName)));
