@@ -1,6 +1,5 @@
 package com.enough.demopoi.utils;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.util.Assert;
@@ -105,19 +104,22 @@ public class ExcelUtil {
      * @return
      */
     public static String getCellValueString(Sheet sheets, int rowIdx, int colIdx) {
-        String strCell = "";
+        String strCell;
         Cell cell = sheets.getRow(rowIdx).getCell(colIdx);
-        switch (cell.getCellType()) {
-        case HSSFCell.CELL_TYPE_NUMERIC:
+        if(cell == null){
+            return "";
+        }
+        switch (cell.getCellTypeEnum()) {
+        case NUMERIC:
             strCell = String.valueOf(cell.getNumericCellValue());
             break;
-        case HSSFCell.CELL_TYPE_STRING:
+        case STRING:
             strCell = cell.getStringCellValue();
             break;
-        case HSSFCell.CELL_TYPE_BOOLEAN:
+        case BOOLEAN:
             strCell = String.valueOf(cell.getBooleanCellValue());
             break;
-        case HSSFCell.CELL_TYPE_FORMULA:
+        case FORMULA:
             try {
                 strCell = String.valueOf(cell.getNumericCellValue());
             } catch (IllegalStateException e) {
@@ -130,7 +132,7 @@ public class ExcelUtil {
 
         if (cell.getCellStyle().getDataFormatString().contains("0.00%")) {
             try {
-                double dbCell = Double.valueOf(strCell);
+                double dbCell = Double.parseDouble(strCell);
                 strCell = new DecimalFormat("#.00").format(dbCell * 100) + "%";
             } catch (NumberFormatException e) {
             }
