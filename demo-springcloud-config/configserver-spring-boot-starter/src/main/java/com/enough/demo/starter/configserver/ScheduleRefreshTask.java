@@ -30,7 +30,8 @@ public class ScheduleRefreshTask {
     public void setScheduleConfig(ScheduleConfig scheduleConfig) {
         this.scheduleConfig = scheduleConfig;
     }
-    public void setReadyRefresh(boolean readyRefresh){
+
+    public void setReadyRefresh(boolean readyRefresh) {
         this.readyRefresh = readyRefresh;
     }
 

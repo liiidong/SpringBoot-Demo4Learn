@@ -37,6 +37,7 @@ public class Singleton {
 
     /**
      * 双重校验
+     *
      * @return
      */
     public static Singleton getInstance4() {

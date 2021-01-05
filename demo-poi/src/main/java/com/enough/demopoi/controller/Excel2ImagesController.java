@@ -55,12 +55,12 @@ public class Excel2ImagesController {
     public static void main(String[] args) throws Exception {
         long startTime = System.currentTimeMillis();
         System.out.println("开始时间：" + startTime);
-        Excel2Image excel2Image = new Excel2Image("C:\\Users\\LD\\Desktop\\6月考勤汇总表.xlsx", Excel2Image.SheetTypeEnum.IDX, null, 0);
+        Excel2Image excel2Image = new Excel2Image("C:\\Users\\Yeahmobi\\Desktop\\12月考勤汇总表.xlsx", Excel2Image.SheetTypeEnum.IDX, null, 0);
         excel2Image.setImageFileNameColIdx(2);
         excel2Image.setImageFormat("JPG");
-        boolean exportRst = excel2Image.excelRow2Images("C:\\Users\\LD\\Desktop\\工资截图");
-        if (exportRst && true) {
-            String cmdDir[] = {"explorer.exe","C:\\Users\\LD\\Desktop\\工资截图"};
+        boolean exportRst = excel2Image.excelRow2Images("C:\\Users\\Yeahmobi\\Desktop\\12月考勤汇总");
+        if (exportRst) {
+            String[] cmdDir = {"explorer.exe","C:\\Users\\LD\\Yeahmobi\\12月考勤汇总"};
             Runtime.getRuntime().exec(cmdDir);
         }
         System.out.println("结束时间：" + System.currentTimeMillis());

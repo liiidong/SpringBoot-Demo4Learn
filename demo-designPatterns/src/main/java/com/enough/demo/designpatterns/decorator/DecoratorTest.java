@@ -11,7 +11,7 @@ import org.junit.Test;
 public class DecoratorTest {
 
     @Test
-    public void carDecoratorTest(){
+    public void carDecoratorTest() {
         ICar car1 = new Car();
         ICar car2 = new WheelDecoratorImpl(car1);
         ICar car3 = new GasDecoratorImpl(car2);

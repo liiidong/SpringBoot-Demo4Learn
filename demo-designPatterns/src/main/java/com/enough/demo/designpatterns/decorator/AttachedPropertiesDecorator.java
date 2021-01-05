@@ -10,7 +10,7 @@ public abstract class AttachedPropertiesDecorator implements ICar {
 
     private ICar iCar;
 
-    public AttachedPropertiesDecorator(ICar iCar){
+    public AttachedPropertiesDecorator(ICar iCar) {
         this.iCar = iCar;
     }
 

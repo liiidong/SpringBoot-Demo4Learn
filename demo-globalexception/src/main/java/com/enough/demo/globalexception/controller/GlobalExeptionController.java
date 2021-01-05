@@ -17,15 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class GlobalExeptionController {
 
     @GetMapping("/test")
-    public ReturnResult<String> getExceptionTest(){
+    public ReturnResult <String> getExceptionTest() {
         throw new GlobalException("手动抛出异常！");
     }
+
     @GetMapping("/enough")
-    public ReturnResult<String> getException() throws Exception {
+    public ReturnResult <String> getException() throws Exception {
         throw new Exception("Exception异常！");
     }
+
     @GetMapping("/runtime")
-    public ReturnResult<String> geRruntimeException() {
+    public ReturnResult <String> geRruntimeException() {
         throw new RuntimeException("runtimeException异常！");
     }
 }

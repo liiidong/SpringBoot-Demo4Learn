@@ -44,7 +44,7 @@ public class ConfigPropertyChangeListener implements ApplicationListener <Config
      * 使用OKHttp发送【异步】请求
      */
     private void refreshWithOKHttp() throws InterruptedException {
-        OKHttpUtil.postUseOkhttpAsync(URL,"{}");
+        OKHttpUtil.postUseOkhttpAsync(URL, "{}");
         //等待请求线程，否则主线程结束无法看到请求结果
         Thread.currentThread().join();
     }

@@ -22,32 +22,32 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-jdbc</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.mybatis.spring.boot</groupId>-->
-<!--            <artifactId>mybatis-spring-boot-starter</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>jsr311-api</artifactId>-->
-<!--                    <groupId>javax.ws.rs</groupId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-bus-kafka</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-jdbc</artifactId>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.mybatis.spring.boot</groupId>-->
+        <!--            <artifactId>mybatis-spring-boot-starter</artifactId>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.cloud</groupId>-->
+        <!--            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
+        <!--            <exclusions>-->
+        <!--                <exclusion>-->
+        <!--                    <artifactId>jsr311-api</artifactId>-->
+        <!--                    <groupId>javax.ws.rs</groupId>-->
+        <!--                </exclusion>-->
+        <!--            </exclusions>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.cloud</groupId>-->
+        <!--            <artifactId>spring-cloud-starter-bus-kafka</artifactId>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
+        <!--        </dependency>-->
     </dependencies>
 
     <build>

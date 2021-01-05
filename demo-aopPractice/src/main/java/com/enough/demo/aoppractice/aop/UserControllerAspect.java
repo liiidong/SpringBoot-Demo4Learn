@@ -58,7 +58,7 @@ public class UserControllerAspect {
         String argsStr = getArgsJsonStr(point);
         log.info(methodStr.concat(",入参：").concat(argsStr));
         long startDate = System.currentTimeMillis();
-        Object result =  point.proceed();
+        Object result = point.proceed();
         long endDate = System.currentTimeMillis();
         log.info("请求耗时：".concat(String.valueOf(endDate - startDate).concat("ms")));
         log.info(methodStr.concat(",返回结果：").concat(result == null ? "无" : JSONUtils.toJSONString(result)));

@@ -23,7 +23,7 @@ public class EurekClient2Controler {
     private String hostname;
 
     @GetMapping("/server")
-    public String server(){
+    public String server() {
         return new StringBuilder(hostname).append(port).toString();
     }
 }

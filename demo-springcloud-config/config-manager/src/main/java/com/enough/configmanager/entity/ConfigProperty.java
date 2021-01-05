@@ -2,11 +2,13 @@ package com.enough.configmanager.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import lombok.Data;
 
 /**
  * config_properties
- * @author 
+ *
+ * @author
  */
 @Data
 public class ConfigProperty implements Serializable {

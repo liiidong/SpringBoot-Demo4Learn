@@ -11,9 +11,10 @@ import java.util.Date;
 
 /**
  * sys_user
- * @author 
+ *
+ * @author
  */
-@Table(name="sys_user")
+@Table(name = "sys_user")
 @Data
 public class SysUser implements Serializable {
     @Id

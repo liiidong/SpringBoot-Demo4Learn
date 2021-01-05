@@ -12,9 +12,9 @@ spring:
       refresh: # 开启 bus 刷新功能；
         enabled: true
   kafka:
-#    consumer:
-#      bootstrap-servers: #指定 kafka 的服务地址
-#        - localhost:9092
+    #    consumer:
+    #      bootstrap-servers: #指定 kafka 的服务地址
+    #        - localhost:9092
     bootstrap-servers:
       - localhost:9092
 

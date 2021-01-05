@@ -11,5 +11,5 @@ import java.util.List;
  * @create: 2020/04/26
  */
 public interface PermissionService {
-    List<SysPermission> findByUserId(Integer id);
+    List <SysPermission> findByUserId(Integer id);
 }

@@ -1,12 +1,10 @@
 package com.enough.demopoi.images;
 
+import cn.hutool.core.img.ImgUtil;
 import com.enough.demopoi.utils.ExcelUtil;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -15,6 +13,8 @@ import sun.awt.SunHints;
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -73,8 +73,8 @@ public class Excel2Image {
         int rowSize = ExcelUtil.getActiveRowCount(sheet);
         int imageWidth = float2Int((ExcelUtil.getRowWidth(sheet) * 1.5f));
         int imageHeight = float2Int(ExcelUtil.getRowHeight(0, 2, sheet) * 2.0f);
-        List <GridInfo> grids = null;
-        String fileName = "";
+        List <GridInfo> grids;
+        String fileName;
         float x = ExcelUtil.getSingleColWidth(sheet, 0) * MULTIPLE;
         float y = sheet.getRow(0).getHeightInPoints() * MULTIPLE;
         for (int i = 1; i < rowSize; i++) {
@@ -180,6 +180,13 @@ public class Excel2Image {
         g2d.setRenderingHint(SunHints.KEY_FRACTIONALMETRICS, SunHints.VALUE_FRACTIONALMETRICS_OFF);
         g2d.setRenderingHint(SunHints.KEY_RENDERING, SunHints.VALUE_RENDER_DEFAULT);
         g2d.setColor(Color.white);
+        //减少锯齿
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+        //消除文字锯齿
+        //g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        //消除画图锯齿
+        //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
         //填充图形矩形
         g2d.fillRect(0, 0, imageWidth, imageHeight);
         // 绘制表格
@@ -219,7 +226,9 @@ public class Excel2Image {
             // 获取将要绘制的文字宽度
             int strWidth = fm.stringWidth(g.getText());
             //设置字体
-            g2d.setFont(g.getFont());
+//            g2d.setFont(g.getFont() == null ? new Font("等线", Font.BOLD, 14) : g.getFont());
+            g2d.setFont(new Font("等线", Font.BOLD, g2d.getFont().getSize()));
+            g2d.setPaint(Color.BLACK);
             //计算居中位置
             g2d.drawString(g.getText(), g.getX() + (g.getWidth() - strWidth) / 2,
                     g.getY() + (g.getHeight() - g.getFont().getSize()) / 2 + g.getFont().getSize());
@@ -231,6 +240,9 @@ public class Excel2Image {
     }
 
     public enum SheetTypeEnum {
+        /**
+         * 类型枚举：索引、名称
+         */
         IDX, NAME
     }
 }

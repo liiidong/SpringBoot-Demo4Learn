@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -42,13 +41,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         // 配置jdbc数据源,连接mysql数据库
         clients.jdbc(dataSource);
-//        clients.inMemory()
-//                .withClient("clientapp")
-//                .secret("123456")
-//                .redirectUris("http://localhost:9000/callback")
-//                //密码模式
-//                .authorizedGrantTypes("password")
-//                .scopes("read_profile", "read_contacts");
+        //        clients.inMemory()
+        //                .withClient("clientapp")
+        //                .secret("123456")
+        //                .redirectUris("http://localhost:9000/callback")
+        //                //密码模式
+        //                .authorizedGrantTypes("password")
+        //                .scopes("read_profile", "read_contacts");
     }
 
     @Override

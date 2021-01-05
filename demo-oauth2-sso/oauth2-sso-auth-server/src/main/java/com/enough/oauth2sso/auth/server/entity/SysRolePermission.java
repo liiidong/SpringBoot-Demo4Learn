@@ -6,14 +6,16 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * sys_permission
- * @author 
+ *
+ * @author
  */
-@Table(name="sys_permission")
+@Table(name = "sys_permission")
 @Data
 public class SysRolePermission implements Serializable {
     @Id

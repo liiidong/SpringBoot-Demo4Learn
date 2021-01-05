@@ -1,6 +1,6 @@
 server:
   port: 9000
-    #servlet:
+  #servlet:
   #context-path: /rpcBalanced #servlet根路径
 spring:
   application:

@@ -35,7 +35,7 @@ public class RestTemplateService {
         return entity.getBody();
     }
 
-    public String getServerError(){
+    public String getServerError() {
         return "restTemplateHystrix服务器繁忙！";
     }
 }

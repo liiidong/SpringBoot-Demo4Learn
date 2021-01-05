@@ -22,7 +22,6 @@ public class ConfigPropertiesController {
     @Autowired
     private ConfigPropertyService configPropertyService;
 
-
     @PostMapping("/query")
     public ReturnResult <List> query(@RequestBody ConfigPropertyDTO searchParam) {
         List <ConfigPropertyDTO> configPropertyDTOS = configPropertyService.queryConfigProperties(searchParam);

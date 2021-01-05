@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
  * @create: 2019/08/21
  */
 @Configuration
-@ConditionalOnProperty(name="configserver.enable", havingValue="true", matchIfMissing = true)
-@EnableConfigurationProperties({ ScheduleConfig.class })
+@ConditionalOnProperty(name = "configserver.enable", havingValue = "true", matchIfMissing = true)
+@EnableConfigurationProperties({ScheduleConfig.class})
 public class ScheduleConfiguration {
 
     @Autowired
@@ -22,7 +22,7 @@ public class ScheduleConfiguration {
 
     /**
      * 创建刷新配置任务
-     * 
+     *
      * @return
      */
     @Bean
@@ -36,7 +36,7 @@ public class ScheduleConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = "configserver.refreshconfig.enable", havingValue = "true")
-    public ApplicationReadyEventListener applicationReadyEventListener(){
+    public ApplicationReadyEventListener applicationReadyEventListener() {
         return new ApplicationReadyEventListener();
     }
 

@@ -37,7 +37,7 @@ public class GlobalExcptionHander {
      */
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
-    public ReturnResult<?> exceptionHander(Exception e) {
+    public ReturnResult <?> exceptionHander(Exception e) {
         return ReturnResult.failed(Object.class).msg(e.getMessage()).build();
     }
 

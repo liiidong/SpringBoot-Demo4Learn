@@ -16,7 +16,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         id, property_key, property_value, `application`, profile, `label`, user_id, create_time,
-    create_user, update_time, update_user
+        create_user, update_time, update_user
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT
@@ -80,13 +80,13 @@
     </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.enough.configmanager.dto.ConfigPropertyDTO" useGeneratedKeys="true">
         insert into config_properties (id, property_key, property_value, `application`,
-                                       profile, `label`, user_id,
-                                       create_time, create_user, update_time,
-                                       update_user)
+        profile, `label`, user_id,
+        create_time, create_user, update_time,
+        update_user)
         values (#{id}, #{propertyKey,jdbcType=VARCHAR}, #{propertyValue,jdbcType=VARCHAR}, #{application,jdbcType=VARCHAR},
-                #{profile,jdbcType=VARCHAR}, #{label,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
-                #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
-                #{updateUser,jdbcType=VARCHAR})
+        #{profile,jdbcType=VARCHAR}, #{label,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+        #{updateUser,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.enough.configmanager.dto.ConfigPropertyDTO" useGeneratedKeys="true">
         insert into config_properties
@@ -189,16 +189,16 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.enough.configmanager.dto.ConfigPropertyDTO">
         update config_properties
-        set property_key   = #{propertyKey,jdbcType=VARCHAR},
-            property_value = #{propertyValue,jdbcType=VARCHAR},
-            `application`  = #{application,jdbcType=VARCHAR},
-            profile        = #{profile,jdbcType=VARCHAR},
-            `label`        = #{label,jdbcType=VARCHAR},
-            user_id        = #{userId,jdbcType=VARCHAR},
-            create_time    = #{createTime,jdbcType=TIMESTAMP},
-            create_user    = #{createUser,jdbcType=VARCHAR},
-            update_time    = #{updateTime,jdbcType=TIMESTAMP},
-            update_user    = #{updateUser,jdbcType=VARCHAR}
+        set property_key = #{propertyKey,jdbcType=VARCHAR},
+        property_value = #{propertyValue,jdbcType=VARCHAR},
+        `application` = #{application,jdbcType=VARCHAR},
+        profile = #{profile,jdbcType=VARCHAR},
+        `label` = #{label,jdbcType=VARCHAR},
+        user_id = #{userId,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_user = #{createUser,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_user = #{updateUser,jdbcType=VARCHAR}
         where id = #{id}
     </update>
     <update id="updateConfigProperties">

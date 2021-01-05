@@ -23,7 +23,7 @@ public class RpcBalanceDemoApplication {
 
     @Bean
     @LoadBalanced //注入RestTemplate作为RPC调用对象，并开启负载均衡
-    public RestTemplate restTemplate(){
+    public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 }

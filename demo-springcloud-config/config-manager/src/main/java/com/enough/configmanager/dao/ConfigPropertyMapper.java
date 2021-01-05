@@ -17,13 +17,13 @@ public interface ConfigPropertyMapper {
 
     int updateByPrimaryKey(ConfigPropertyDTO record);
 
-    List<ConfigPropertyDTO> getAllConfigProperties();
+    List <ConfigPropertyDTO> getAllConfigProperties();
 
-    List<ConfigPropertyDTO> queryConfigProperties(ConfigPropertyDTO searchParam);
+    List <ConfigPropertyDTO> queryConfigProperties(ConfigPropertyDTO searchParam);
 
     int deleteConfigProperties(String application);
 
-    int updateConfigProperties(List<ConfigPropertyDTO> configPropertyDTOS);
+    int updateConfigProperties(List <ConfigPropertyDTO> configPropertyDTOS);
 
-    int addConfigProperties(List<ConfigPropertyDTO> queryConfigProperties);
+    int addConfigProperties(List <ConfigPropertyDTO> queryConfigProperties);
 }

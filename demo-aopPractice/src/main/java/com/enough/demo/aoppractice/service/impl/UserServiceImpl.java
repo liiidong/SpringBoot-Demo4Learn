@@ -21,16 +21,14 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class UserServiceImpl implements UserService {
-    private static List<UserDTO> userDTOList;
+    private static List <UserDTO> userDTOList;
 
     static {
         userDTOList = new ArrayList <>();
-        userDTOList.add(CommonBuilder.of(UserDTO::new)
-                .with(UserDTO::setName,"张三")
-                .with(UserDTO::setId,"zhangsan")
-                .with(UserDTO::setAge,22)
-                .with(UserDTO::setAddress,"xi'an").build());
+        userDTOList.add(CommonBuilder.of(UserDTO::new).with(UserDTO::setName, "张三").with(UserDTO::setId, "zhangsan").with(UserDTO::setAge, 22)
+                .with(UserDTO::setAddress, "xi'an").build());
     }
+
     @Override
     public boolean addUser(UserDTO userDTO) {
         return userDTOList.add(userDTO);
@@ -48,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUser(String id) {
-        List<UserDTO> userDTOS = userDTOList.stream().filter(u -> StringUtils.equalsIgnoreCase(u.getId(), id)).collect(Collectors.toList());
+        List <UserDTO> userDTOS = userDTOList.stream().filter(u -> StringUtils.equalsIgnoreCase(u.getId(), id)).collect(Collectors.toList());
         return CollectionUtils.isNotEmpty(userDTOS) ? userDTOS.get(0) : null;
     }
 }
